@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/orders';
 
     /**
      * Create a new controller instance.
@@ -36,4 +36,23 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function username()
+    {
+        return 't_number';
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|integer',
+            'password' => 'required|string',
+        ], [
+            'password.required' => 'Введіть пароль',
+            $this->username().'.required' => 'Введіть табельний',
+            $this->username().'.integer' => 'Табельний має бути числом',
+        ]
+        );
+    }
 }
+
