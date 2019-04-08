@@ -23,6 +23,11 @@ Route::post('/register', 'Auth\RegisterController@register');
 
 
 Route::group(['middleware' => 'auth'], function () {
-  	Route::get('/orders', 'OrderController@index')->name('orders');
+	Route::get('/orders', 'OrderController@index')->name('orders');
+	Route::post('/orders', 'OrderController@create');
+	Route::get('/my-orders', 'OrderController@myOrders')->name('myOrders');
+	Route::get('/group-orders', 'OrderController@groupOrders')->name('grouOrders');
+	Route::delete('/order-del', 'OrderController@destroy');
+	Route::post('/zonder/', 'OrderController@zonder');
   	
 });

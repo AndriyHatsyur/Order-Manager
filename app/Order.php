@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'teil', 'parent_id', 'group_id'
+        'teil', 'parent_id', 'group_id', 'zonder'
     ];
 
     
