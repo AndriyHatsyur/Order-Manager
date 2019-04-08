@@ -28,5 +28,19 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     
+    public function orders()
+    {
+        return $this->hasMany('App\Order');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo('App\Group');
+    }
 }
