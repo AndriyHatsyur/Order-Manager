@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    
+    /**
+     * @return array
+     */
     public function index()
     {
         $orders = Order::where('parent_id', NULL)->get();
@@ -19,7 +21,11 @@ class OrderController extends Controller
       
         return $data; 
     }
-    
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function create(Request $request)
     {
            Auth::user()->orders()->create([
@@ -32,6 +38,10 @@ class OrderController extends Controller
        return redirect('orders');
    }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
    public function destroy(Request $request)
     {
         Order::destroy($request->id);
@@ -39,6 +49,10 @@ class OrderController extends Controller
         return redirect('orders');
     }
 
+    /***
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function zonder(Request $request)
     {
         $order = Order::find($request->id);
@@ -50,6 +64,9 @@ class OrderController extends Controller
         return redirect('orders');
     }
 
+    /**
+     * @return array
+     */
     public function myOrders()
     {
         $orders = Auth::user()->orders()->where('parent_id', NULL)->get()->load('children', 'user', 'group');
@@ -68,7 +85,12 @@ class OrderController extends Controller
         return $data;
     }
 
-    private function data($orders, &$data = []): array
+    /**
+     * @param Order $orders
+     * @param array $data
+     * @return array
+     */
+    private function data(Order $orders, &$data = []): array
     {
         foreach ($orders as $value) {
 
