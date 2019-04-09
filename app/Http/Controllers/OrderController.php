@@ -7,6 +7,7 @@ use App\Order;
 use App\User;
 use App\Group;
 use Illuminate\Support\Facades\Auth;
+use mysql_xdevapi\Collection;
 
 class OrderController extends Controller
 {
@@ -86,17 +87,17 @@ class OrderController extends Controller
     }
 
     /**
-     * @param Order $orders
+     * @param \Illuminate\Support\Collection $orders
      * @param array $data
      * @return array
      */
-    private function data(Order $orders, &$data = []): array
+    private function data(\Illuminate\Support\Collection $orders, &$data = []): array
     {
-        foreach ($orders as $value) {
+        foreach ($orders as $order) {
 
-            $data[] = $value->load('group', 'user', 'children');
+            $data[] = $order->load('group', 'user', 'children');
         
-            $this->data($value->children, $data);
+            $this->data($order->children, $data);
         }
 
         return $data;
