@@ -15,6 +15,8 @@ class Group extends Model
         'name',
     ];
 
+    public $timestamps = false;
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

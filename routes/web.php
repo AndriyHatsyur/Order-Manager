@@ -32,12 +32,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('/order-del', 'OrderController@destroy');
 	Route::post('/zonder/', 'OrderController@zonder');
 
+	// admin routes
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+        Route::get('users', 'AdminUserController@index');
+        Route::post('users', 'AdminUserController@create');
+        Route::delete('users', 'AdminUserController@destroy');
+    });
 
 });
 
 
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
-    Route::get('users', 'AdminUserController@index');
-    Route::post('users', 'AdminUserController@create');
-    Route::delete('users', 'AdminUserController@destroy');
-});

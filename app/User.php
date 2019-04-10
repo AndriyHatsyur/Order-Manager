@@ -43,4 +43,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Group');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function roles()
+    {
+        return $this->hasOne('App\Role');
+    }
 }

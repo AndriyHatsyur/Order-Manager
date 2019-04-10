@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use Illuminate\Http\Request;
 use App\Order;
 use App\User;
@@ -16,6 +17,8 @@ class OrderController extends Controller
      */
     public function index()
     {
+
+
         $orders = Order::where('parent_id', NULL)->get();
        
         $data = $this->data($orders);

@@ -24,6 +24,11 @@ class AdminUserController extends Controller
      */
     public function create(Request $request)
     {
+
+        if ($request->user()->cannot('create', new User())) {
+            abort(403);
+        }
+
         User::create([
             't_number' => $request->t_number,
             'password' => Hash::make('password')
@@ -35,6 +40,16 @@ class AdminUserController extends Controller
      */
     public function destroy(Request $request)
     {
+
+        if ($request->user()->cannot('delete', new User())) {
+            abort(403);
+        }
+        
         User::destroy($request->id);
+    }
+
+    public function update(Request $request)
+    {
+
     }
 }
