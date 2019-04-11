@@ -12,8 +12,8 @@
 */
 
 //Auth::routes
-Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('/', 'Auth\LoginController@login');
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login/', 'Auth\LoginController@login');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 // Registration routes...
@@ -24,6 +24,10 @@ Route::post('/register', 'Auth\RegisterController@register');
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::get('/',function (){
+
+        return view('main');
+    });
 
 	Route::get('/orders', 'OrderController@index')->name('orders');
 	Route::post('/orders', 'OrderController@create');

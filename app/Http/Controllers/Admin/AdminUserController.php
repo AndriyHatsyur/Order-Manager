@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -29,10 +30,12 @@ class AdminUserController extends Controller
             abort(403);
         }
 
-        User::create([
+        $user = User::create([
             't_number' => $request->t_number,
             'password' => Hash::make('password')
         ]);
+
+        Role::create(['user_id' => $user->id]);
     }
 
     /**
@@ -44,12 +47,18 @@ class AdminUserController extends Controller
         if ($request->user()->cannot('delete', new User())) {
             abort(403);
         }
-        
+
         User::destroy($request->id);
     }
 
+    /**
+     * @param Request $request
+     */
     public function update(Request $request)
     {
+        if ($request->user()->cannot('update', new User())) {
+            abort(403);
+        }
 
     }
 }
