@@ -1,10 +1,10 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
 
         <table class="table table-bordered  table-hover" v-bind:class="{'table-dark': dark }">
           <thead>
             <tr>
-              <th scope="col">ID</th>
+              <th scope="col">IDd</th>
               <th scope="col">TEIL</th>
               <th scope="col">USER</th>
               <th scope="col">DATE</th>

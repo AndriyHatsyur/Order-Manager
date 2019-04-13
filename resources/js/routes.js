@@ -10,6 +10,7 @@ export default new VueRouter({
         { path: '/', component: TableOrdersComponent},
 
 
+
     ],
     mode: 'history'
 })
