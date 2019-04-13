@@ -21,7 +21,7 @@ class CreateRolesTable extends Migration
             $table->boolean('user_create')->default(false);
             $table->boolean('user_update')->default(false);
             $table->boolean('user_delete')->default(false);
-            
+
         });
     }
 

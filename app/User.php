@@ -51,4 +51,12 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Role');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function location()
+    {
+        return $this->belongsTo('App\Location');
+    }
 }
