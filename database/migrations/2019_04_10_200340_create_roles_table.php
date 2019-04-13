@@ -16,11 +16,12 @@ class CreateRolesTable extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('user_id')->unsigned();
-            $table->boolean('user_create')->default(0);
-            $table->boolean('user_update')->default(0);
-            $table->boolean('user_delete')->default(0);
-
-
+            $table->boolean('is_super_admin')->default(false);
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('user_create')->default(false);
+            $table->boolean('user_update')->default(false);
+            $table->boolean('user_delete')->default(false);
+            
         });
     }
 
