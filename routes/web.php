@@ -11,10 +11,13 @@
 |
 */
 
-//Auth::routes
-Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login/', 'Auth\LoginController@login');
-Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/',function (){
+
+    return view('main');
+});
+
+Route::post('/app/login', 'Auth\LoginController@login');
+Route::get('/app/logout', 'Auth\LoginController@logout')->name('logout');
 
 // Registration routes...
 Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
@@ -22,12 +25,9 @@ Route::post('/register', 'Auth\RegisterController@register');
 
 
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 
-    Route::get('/',function (){
 
-        return view('main');
-    });
 
 	Route::get('/orders', 'OrderController@index')->name('orders');
 	Route::post('/orders', 'OrderController@create');
