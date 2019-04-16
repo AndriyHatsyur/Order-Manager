@@ -1977,7 +1977,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       post: {
         t_number: '',
-        password: ''
+        password: '',
+        remember: 1
       }
     };
   },
@@ -1987,8 +1988,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post("/app/login", this.post).then(function (response) {
         var parsed = JSON.stringify(response.data.user);
-        localStorage.setItem('user', parsed); //console.log(JSON.parse(localStorage.getItem('user')));
-
+        localStorage.setItem('user', parsed);
         _this.$store.state.user = response.data.user;
         window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
 

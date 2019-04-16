@@ -38,7 +38,8 @@ v-model="post.password"
             return{
                 post: {
                     t_number: '',
-                    password: ''
+                    password: '',
+                    remember: 1
                 }
             }
         },
@@ -50,7 +51,7 @@ v-model="post.password"
 
                         const parsed = JSON.stringify(response.data.user);
                         localStorage.setItem('user', parsed);
-                        //console.log(JSON.parse(localStorage.getItem('user')));
+
                         this.$store.state.user = response.data.user;
                         window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
                         this.$router.push('/orders');
