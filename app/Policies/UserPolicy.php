@@ -23,4 +23,9 @@ class UserPolicy
     {
         return $user->roles->user_delete;
     }
+
+    public function before(User $user)
+    {
+        return $user->roles->is_super_admin;
+    }
 }

@@ -45,5 +45,13 @@ class Order extends Model
         return $this->belongsTo('App\Location');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
+    }
+
 
 }

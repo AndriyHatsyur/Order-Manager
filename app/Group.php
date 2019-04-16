@@ -33,4 +33,13 @@ class Group extends Model
    		
    		return $this->hasMany('App\User');
   	}
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
+    }
+
 }

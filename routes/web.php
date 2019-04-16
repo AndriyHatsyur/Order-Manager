@@ -11,18 +11,15 @@
 |
 */
 
-Route::get('/',function (){
 
+Route::get('/',function (Request $request){
+
+    //return 'home';
     return view('main');
 });
 
 Route::post('/app/login', 'Auth\LoginController@login');
 Route::get('/app/logout', 'Auth\LoginController@logout')->name('logout');
-
-// Registration routes...
-Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('/register', 'Auth\RegisterController@register');
-
 
 
 Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
