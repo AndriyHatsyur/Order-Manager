@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFieldTerminforOrdersTable extends Migration
+class AddLocationFieldFromOrders extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddFieldTerminforOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dateTime('term')->nullable();
+            $table->integer('location_id')->unsigned()->nullable();
+            $table->foreign('location_id')->references('id')->on('locations');
         });
     }
 

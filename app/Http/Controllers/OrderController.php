@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use App\Status;
 use Illuminate\Http\Request;
 use App\Order;
 use App\User;
 use App\Group;
 use Illuminate\Support\Facades\Auth;
 use mysql_xdevapi\Collection;
-
+use Carbon\Carbon;
 class OrderController extends Controller
 {
     /**
@@ -17,7 +18,6 @@ class OrderController extends Controller
      */
     public function index()
     {
-
 
         $orders = Order::where('parent_id', NULL)->get();
        
@@ -32,14 +32,37 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
+
+        $status = Status::where('code', 100)->first();
+
+
            Auth::user()->orders()->create([
-             'teil' => $request->teil,
-             'parent_id' => $request->parent,
-             'group_id' => $request->group,
-             'zonder' => $request->zonder
+               'teil'        => $request->teil,
+               'parent_id'   => $request->parent,
+               'group_id'    => $request->group,
+               'zonder'      => $request->zonder,
+               'status_id'   => $status->id,
+               'reason_id'   => $request->reason,
+               'location_id' => $request->location
+
            ]);
 
-       return redirect('orders');
+
+
+       //return redirect('/app/orders');
+   }
+
+   public function setTerm(Request $request)
+   {
+       $date = Carbon::now();
+       $term = $date->addHours($request->term);
+
+       $order = Order::find($request->id);
+
+       $order->term = $term;
+
+       $order->save();
+
    }
 
     /**
@@ -98,7 +121,7 @@ class OrderController extends Controller
     {
         foreach ($orders as $order) {
 
-            $data[] = $order->load('group', 'user', 'children');
+            $data[] = $order->load('group', 'user', 'children', 'location', 'reason');
         
             $this->data($order->children, $data);
         }

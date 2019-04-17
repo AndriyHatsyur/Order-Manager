@@ -11,11 +11,16 @@
 |
 */
 
-
-Route::get('/',function (Request $request){
+use Carbon\Carbon;
+Route::get(/**
+ * @param Request $request
+ * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+ */ '/',function (Request $request){
 
     //return 'home';
     return view('main');
+
+
 });
 
 Route::post('/app/login', 'Auth\LoginController@login');
@@ -32,6 +37,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 	Route::get('/group-orders', 'OrderController@groupOrders')->name('grouOrders');
 	Route::delete('/order-del', 'OrderController@destroy');
 	Route::post('/zonder/', 'OrderController@zonder');
+    Route::post('/term/', 'OrderController@setTerm');
 
 	// admin routes
     Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
