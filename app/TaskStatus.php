@@ -14,4 +14,12 @@ class TaskStatus extends Model
         return $this->hasMany('App\Task');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany('App\HistoryTask');
+    }
+
 }

@@ -67,4 +67,20 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Location');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function historyOrders()
+    {
+        return $this->hasMany('App\HistoryOrder');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany('App\HistoryTask');
+    }
 }

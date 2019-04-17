@@ -61,5 +61,22 @@ class Order extends Model
         return $this->belongsTo('App\Reason');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany('App\HistoryOrder');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function status()
+    {
+        return $this->belongsTo('App\Status');
+    }
+
+
 
 }

@@ -41,4 +41,12 @@ class Task extends Model
     {
         return $this->belongsTo('App\Group');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany('App\HistoryTask');
+    }
 }
