@@ -12,16 +12,15 @@
 */
 
 use Carbon\Carbon;
-Route::get(/**
- * @param Request $request
- * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
- */ '/',function (Request $request){
+Route::get('/',function (Request $request){
 
-    //return 'home';
+
     return view('main');
 
 
 });
+
+//Route::get('/app/test', 'OrderController@cancel');
 
 Route::post('/app/login', 'Auth\LoginController@login');
 Route::get('/app/logout', 'Auth\LoginController@logout')->name('logout');
@@ -33,10 +32,14 @@ Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 
 	Route::get('/orders', 'OrderController@index')->name('orders');
 	Route::post('/orders', 'OrderController@create');
+    Route::delete('/orders', 'OrderController@cancel');
+    Route::post('/orders-success', 'OrderController@success');
+    Route::post('/zonder/', 'OrderController@zonder');
+
 	Route::get('/my-orders', 'OrderController@myOrders')->name('myOrders');
 	Route::get('/group-orders', 'OrderController@groupOrders')->name('grouOrders');
-	Route::delete('/order-del', 'OrderController@destroy');
-	Route::post('/zonder/', 'OrderController@zonder');
+
+
     Route::post('/term/', 'OrderController@setTerm');
 
 	// admin routes

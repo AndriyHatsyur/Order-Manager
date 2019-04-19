@@ -9,7 +9,6 @@ use App\Order;
 use App\User;
 use App\Group;
 use Illuminate\Support\Facades\Auth;
-use mysql_xdevapi\Collection;
 use Carbon\Carbon;
 class OrderController extends Controller
 {
@@ -19,11 +18,17 @@ class OrderController extends Controller
     public function index()
     {
 
-        $orders = Order::where('parent_id', NULL)->get();
-       
+
+
+        $orders = Order::where('parent_id', NULL)->whereHas('status' ,function ($query) {
+            $query->where('code', '<', 400);
+        })->get();
+
+
+
         $data = $this->data($orders);
       
-        return $data; 
+        return $data;
     }
 
     /**
@@ -33,15 +38,12 @@ class OrderController extends Controller
     public function create(Request $request)
     {
 
-        $status = Status::where('code', 100)->first();
-
-
            Auth::user()->orders()->create([
                'teil'        => $request->teil,
                'parent_id'   => $request->parent,
                'group_id'    => $request->group,
                'zonder'      => $request->zonder,
-               'status_id'   => $status->id,
+               'status_id'   => Status::where('code', 100)->first()->id,
                'reason_id'   => $request->reason,
                'location_id' => $request->location
 
@@ -60,9 +62,49 @@ class OrderController extends Controller
        $order = Order::find($request->id);
 
        $order->term = $term;
+       $order->status_id = Status::where('code', 200)->first()->id;
 
        $order->save();
 
+   }
+
+   public function cancel(Request $request)
+   {
+       $order = Order::find($request->id);
+
+       if ($this->hasChildren($order))
+       {
+           $order = $order->load('children');
+
+           return $order->children;
+       }
+
+
+       $order->status_id = Status::where('code', 500)->first()->id;
+
+       $order->save();
+
+       return "ok";
+
+   }
+
+   public function success(Request $request)
+   {
+       $order = Order::find($request->id);
+
+       if ($this->hasChildren($order))
+       {
+           $order = $order->load('children');
+
+           return $order->children;
+       }
+
+
+       $order->status_id = Status::where('code', 400)->first()->id;
+
+       $order->save();
+
+       return "ok";
    }
 
     /**
@@ -117,15 +159,44 @@ class OrderController extends Controller
      * @param array $data
      * @return array
      */
-    private function data(\Illuminate\Support\Collection $orders, &$data = []): array
+    private function data(\Illuminate\Support\Collection $orders, &$data = [], &$num = 1): array
     {
         foreach ($orders as $order) {
 
-            $data[] = $order->load('group', 'user', 'children', 'location', 'reason');
-        
-            $this->data($order->children, $data);
+            $order->num = $num;
+
+            $order->load('status', 'group', 'user', 'children', 'location', 'reason');
+
+            if ($order->status->code < 400 )
+            {
+                $data[] = $order;
+                $num++;
+            }
+
+
+
+            $this->data($order->children, $data, $num);
         }
 
         return $data;
+    }
+
+    /**
+     * @param Order $order
+     * @return bool
+     */
+    private function hasChildren(Order $order)
+    {
+        foreach ($order->children as $children)
+        {
+            if ($children->status->code < 400 )
+                return true;
+
+        }
+
+        if (isset($children))
+            $this->hasChildren($children);
+
+        return false;
     }
 }

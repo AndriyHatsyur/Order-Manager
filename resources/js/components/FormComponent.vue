@@ -60,6 +60,7 @@
 </template>
 <script>
     export default {
+        props: ['dialog', 'parent_id'],
         data: () => ({
             valid: false,
             post: {
@@ -67,17 +68,18 @@
                 teil: '',
                 group: '',
                 reason: '',
-                zonder: false
+                zonder: false,
+                parent: null
             },
 
-            dialog: false,
+
 
 
         }),
 
         methods:{
             send:function(){
-
+                this.post.parent = this.parent_id;
                 console.log(this.post);
                 axios.post(`/app/orders`, this.post)
                     .then(response => {
