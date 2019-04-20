@@ -1,12 +1,5 @@
 <template>
-    <v-toolbar>
-        <v-toolbar-title>ORDER MANAGER</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn v-for="link in links" :to="link.url" :key="link.title" flat>{{link.title}}</v-btn>
-            <v-btn links v-on:click="logout"> Logout </v-btn>
-        </v-toolbar-items>
-    </v-toolbar>
+    
 </template>
 
 <script>

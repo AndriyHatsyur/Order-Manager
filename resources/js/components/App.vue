@@ -1,8 +1,7 @@
 <template>
-    <v-app >
-        <header-component></header-component>
+    
         <router-view></router-view>
-    </v-app>
+    
 </template>
 
 <script>

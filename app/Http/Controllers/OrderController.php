@@ -37,7 +37,7 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
-
+        for($i = 0; $i < 500; $i++){
            Auth::user()->orders()->create([
                'teil'        => $request->teil,
                'parent_id'   => $request->parent,
@@ -49,7 +49,7 @@ class OrderController extends Controller
 
            ]);
 
-
+           }
 
        //return redirect('/app/orders');
    }
