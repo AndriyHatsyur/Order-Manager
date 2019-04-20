@@ -5,7 +5,7 @@
                 <i class="material-icons btn-success" title="add new order">add</i>
             </div>
         </div>
-        <table class="table table-bordered  table-hover table-dark">
+        <table class="table table-bordered  table-hover table-light">
             <thead>
             <tr>
                 <th scope="col" v-for="item in headers">{{item.text}}</th>
@@ -23,14 +23,33 @@
                     <td>{{order.location.name}}</td>
                     <td>{{order.reason.name}}</td>
                     <td>{{order.term}}</td>
-                    <td><i class="material-icons"
+                    <td>
+                        <i class="material-icons"
                            title="Zonder"
                            @click="zonder(order)"
                            v-bind:class="{ 'green': order.zonder }"
 
                         >
                         local_shipping</i></td>
-                    <td></td>
+                    <td>
+                        <i class="material-icons green"
+                           title="Add order"
+                           @click="zonder(order)"
+                        >
+                            playlist_add</i>
+
+                        <i class="material-icons green"
+                           title="Success"
+                           @click="success(order.id)"
+                        >
+                        check_circle_outline</i>
+
+                        <i class="material-icons child"
+                           title="Cancel"
+                           @click="cancel(order)"
+                        >
+                            cancel</i>
+                    </td>
                 </tr>
             </template>
 
@@ -124,26 +143,28 @@
 
       },
 
-      cancel: function (id) {
+      cancel: function (order) {
 
         const post = {
-          id: id,
+          id: order.id,
           _method: 'delete'
         }
 
         axios.post(`/app/orders`, post)
                 .then(response => {
-                  console.log(response.data);
-                  axios.get('/app/orders')
-                          .then(response => {
+                  let n = this.orders.indexOf(order);
+                  this.orders.splice(n, 1);
+                    axios.get('/app/orders')
+                        .then(response => {
 
                             this.orders = response.data;
 
 
-                          })
-                          .catch(e => {
+                        })
+                        .catch(e => {
 
-                          })
+                        })
+
 
                 })
                 .catch(e => {})

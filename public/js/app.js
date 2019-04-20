@@ -2021,6 +2021,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2094,15 +2113,18 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"](function (e) {});
       })["catch"](function (e) {});
     },
-    cancel: function cancel(id) {
+    cancel: function cancel(order) {
       var _this3 = this;
 
       var post = {
-        id: id,
+        id: order.id,
         _method: 'delete'
       };
       axios.post("/app/orders", post).then(function (response) {
-        console.log(response.data);
+        var n = _this3.orders.indexOf(order);
+
+        _this3.orders.splice(n, 1);
+
         axios.get('/app/orders').then(function (response) {
           _this3.orders = response.data;
         })["catch"](function (e) {});
@@ -38306,7 +38328,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "table",
-      { staticClass: "table table-bordered  table-hover table-dark" },
+      { staticClass: "table table-bordered  table-hover table-light" },
       [
         _c("thead", [
           _c(
@@ -38363,7 +38385,49 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("td")
+                  _c("td", [
+                    _c(
+                      "i",
+                      {
+                        staticClass: "material-icons green",
+                        attrs: { title: "Add order" },
+                        on: {
+                          click: function($event) {
+                            return _vm.zonder(order)
+                          }
+                        }
+                      },
+                      [_vm._v("\n                        playlist_add")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "i",
+                      {
+                        staticClass: "material-icons green",
+                        attrs: { title: "Success" },
+                        on: {
+                          click: function($event) {
+                            return _vm.success(order.id)
+                          }
+                        }
+                      },
+                      [_vm._v("\n                    check_circle_outline")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "i",
+                      {
+                        staticClass: "material-icons child",
+                        attrs: { title: "Cancel" },
+                        on: {
+                          click: function($event) {
+                            return _vm.cancel(order)
+                          }
+                        }
+                      },
+                      [_vm._v("\n                        cancel")]
+                    )
+                  ])
                 ])
               ]
             })
