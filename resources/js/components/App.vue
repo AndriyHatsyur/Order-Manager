@@ -1,7 +1,9 @@
 <template>
-    
-        <router-view></router-view>
-    
+        <div>
+                <header-component></header-component>
+                <router-view></router-view>
+        </div>
+
 </template>
 
 <script>
@@ -13,11 +15,7 @@
             'header-component': Header
         },
 
-        created()  {
 
-            //this.$router.push('/login');
-
-        },
     }
 </script>
 

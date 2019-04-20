@@ -1,4 +1,6 @@
 <template>
+
+
     
 </template>
 <script>
@@ -14,9 +16,6 @@
                 zonder: false,
                 parent: null
             },
-
-
-
 
         }),
 

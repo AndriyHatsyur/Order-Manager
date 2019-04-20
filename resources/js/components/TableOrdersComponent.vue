@@ -1,5 +1,43 @@
 <template>
- 
+    <div class="container-fluid">
+        <div class="row control">
+            <div class="col-sm-6">
+                <i class="material-icons btn-success" title="add new order">add</i>
+            </div>
+        </div>
+        <table class="table table-bordered  table-hover table-dark">
+            <thead>
+            <tr>
+                <th scope="col" v-for="item in headers">{{item.text}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template v-for="order in orders">
+                <tr :class="{ child: order.parent_id }">
+                    <th scope="row">{{order.num}}</th>
+                    <td>{{order.teil}}</td>
+                    <td>{{order.user.t_number}}</td>
+                    <td>{{order.status.code}}</td>
+                    <td>{{order.created_at}}</td>
+                    <td>{{order.group.name}}</td>
+                    <td>{{order.location.name}}</td>
+                    <td>{{order.reason.name}}</td>
+                    <td>{{order.term}}</td>
+                    <td><i class="material-icons"
+                           title="Zonder"
+                           @click="zonder(order)"
+                           v-bind:class="{ 'green': order.zonder }"
+
+                        >
+                        local_shipping</i></td>
+                    <td></td>
+                </tr>
+            </template>
+
+            </tbody>
+        </table>
+    </div>
+
 </template>
 
 <script>
@@ -17,7 +55,7 @@
       return {
         headers: [
 
-          {text: '№', value: 'num'},
+          {text: '#', value: 'num'},
           {text: 'Teil-numme', value: 'teil'},
 
           { text: 'Users', value: 'user.t_number'},
@@ -167,4 +205,19 @@
   .child, .child:hover {
     color: red !important;
   }
+
+    .control {
+        padding: 10px;
+    }
+
+    i {
+        font-size: 2em;
+        cursor: pointer;
+    }
+
+    .green {
+        color: green;
+    }
+
+
 </style>
