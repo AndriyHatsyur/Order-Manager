@@ -1,8 +1,10 @@
 <template>
     <div class="container-fluid">
+      <form-component></form-component>
         <div class="row control">
             <div class="col-sm-6">
-                <i class="material-icons btn-success" title="add new order">add</i>
+                <i class="material-icons btn-success" title="add new order" data-toggle="modal" data-target="#addOrder">add</i>
+                
             </div>
         </div>
         <table class="table table-bordered  table-hover table-light">
@@ -12,46 +14,7 @@
             </tr>
             </thead>
             <tbody>
-            <template v-for="order in orders">
-                <tr :class="{ child: order.parent_id }">
-                    <th scope="row">{{order.num}}</th>
-                    <td>{{order.teil}}</td>
-                    <td>{{order.user.t_number}}</td>
-                    <td>{{order.status.code}}</td>
-                    <td>{{order.created_at}}</td>
-                    <td>{{order.group.name}}</td>
-                    <td>{{order.location.name}}</td>
-                    <td>{{order.reason.name}}</td>
-                    <td>{{order.term}}</td>
-                    <td>
-                        <i class="material-icons"
-                           title="Zonder"
-                           @click="zonder(order)"
-                           v-bind:class="{ 'green': order.zonder }"
-
-                        >
-                        local_shipping</i></td>
-                    <td>
-                        <i class="material-icons green"
-                           title="Add order"
-                           @click="zonder(order)"
-                        >
-                            playlist_add</i>
-
-                        <i class="material-icons green"
-                           title="Success"
-                           @click="success(order.id)"
-                        >
-                        check_circle_outline</i>
-
-                        <i class="material-icons child"
-                           title="Cancel"
-                           @click="cancel(order)"
-                        >
-                            cancel</i>
-                    </td>
-                </tr>
-            </template>
+            <row-component v-for="order in orders" :order="order" :key="order.id"></row-component>
 
             </tbody>
         </table>
@@ -62,13 +25,15 @@
 <script>
 
   import Form from './FormComponent.vue'
-  import LoaderComponent from "./LoaderComponent";
+  import Row from './TableOrdersRowComponent.vue'
+
   export default {
 
     components: {
-      LoaderComponent,
+
       'form-component': Form,
-      'loader-component': LoaderComponent
+        'row-component': Row,
+
     },
     data () {
       return {
@@ -89,156 +54,32 @@
 
         ],
 
-        orders: [],
-        search: '',
-        term: '',
-        dialog: false,
-        parent_id: null
-
       }
 
     },
+
+    computed: {
+    
+    orders: function () {
+     
+      return this.$store.getters.getAlltOrders;
+    }
+  },
 
     created()  {
-
-      axios.get('/app/orders')
-              .then(response => {
-
-                this.orders = response.data;
-                console.log(this.orders);
-
-              })
-              .catch(e => {
-
-              })
-
+      this.$store.dispatch('loadOrders');
+      
     },
-
-
-    methods:{
-
-      setTerm:function (item) {
-
-        const post = {
-          id: item.id,
-          term: item.term
-        }
-
-        axios.post(`/app/term`, post)
-                .then(response => {
-
-                  axios.get('/app/orders')
-                          .then(response => {
-
-                            this.orders = response.data;
-                            console.log(this.orders);
-
-                          })
-                          .catch(e => {
-
-                          })
-
-                })
-                .catch(e => {})
-
-      },
-
-      cancel: function (order) {
-
-        const post = {
-          id: order.id,
-          _method: 'delete'
-        }
-
-        axios.post(`/app/orders`, post)
-                .then(response => {
-                  let n = this.orders.indexOf(order);
-                  this.orders.splice(n, 1);
-                    axios.get('/app/orders')
-                        .then(response => {
-
-                            this.orders = response.data;
-
-
-                        })
-                        .catch(e => {
-
-                        })
-
-
-                })
-                .catch(e => {})
-      },
-
-      zonder: function (order) {
-
-        axios.post(`/app/zonder`, order)
-                .then(response => {
-
-                  order.zonder = !order.zonder;
-
-                })
-                .catch(e => {})
-      },
-
-      addChildren: function (id) {
-        this.parent_id = id;
-        this.dialog = true;
-
-        console.log(id);
-
-
-      },
-      success: function (id) {
-        const post = {
-          id: id,
-
-        }
-
-        axios.post(`/app/orders-success`, post)
-                .then(response => {
-                  console.log(response.data);
-                  axios.get('/app/orders')
-                          .then(response => {
-
-                            this.orders = response.data;
-
-
-                          })
-                          .catch(e => {
-
-                          })
-
-                })
-                .catch(e => {})
-      }
-
-
-
-    }
-
-
   }
 </script>
 
 <style scoped>
-
-  .child, .child:hover {
-    color: red !important;
+  i {
+    font-size: 2em;
+    cursor: pointer;
   }
-
-    .control {
-        padding: 10px;
-    }
-
-    i {
-        font-size: 2em;
-        cursor: pointer;
-    }
-
-    .green {
-        color: green;
-    }
-
+  .control {
+    padding: 10px;
+  }
 
 </style>

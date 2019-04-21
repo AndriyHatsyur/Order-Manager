@@ -17,14 +17,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-
-
-
         $orders = Order::where('parent_id', NULL)->whereHas('status' ,function ($query) {
             $query->where('code', '<', 400);
         })->get();
-
-
 
         $data = $this->data($orders);
       
@@ -37,7 +32,6 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
-        for($i = 0; $i < 500; $i++){
            Auth::user()->orders()->create([
                'teil'        => $request->teil,
                'parent_id'   => $request->parent,
@@ -49,9 +43,6 @@ class OrderController extends Controller
 
            ]);
 
-           }
-
-       //return redirect('/app/orders');
    }
 
    public function setTerm(Request $request)
@@ -60,11 +51,13 @@ class OrderController extends Controller
        $term = $date->addHours($request->term);
 
        $order = Order::find($request->id);
-
+       
        $order->term = $term;
        $order->status_id = Status::where('code', 200)->first()->id;
 
        $order->save();
+
+       return Order::find($request->id)->load('status');
 
    }
 
