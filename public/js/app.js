@@ -1777,6 +1777,11 @@ __webpack_require__.r(__webpack_exports__);
   name: "App",
   components: {
     'header-component': _HeaderComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  created: function created() {
+    var user = JSON.parse(localStorage.getItem('user'));
+    this.$store.state.user.user = user;
+    if (this.$store.state.user.user == null) this.$router.push('/login');
   }
 });
 
@@ -1926,7 +1931,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     logout: function logout() {
-      localStorage.removeItem('user');
+      this.$store.dispatch('logout');
     }
   }
 });
@@ -1975,15 +1980,10 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      console.log(this.post);
-      axios.post("/app/login", this.post).then(function (response) {
-        var parsed = JSON.stringify(response.data.user);
-        localStorage.setItem('user', parsed);
-        _this.$store.state.user = response.data.user;
-        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
-
-        _this.$router.push('/orders');
-      })["catch"](function (e) {});
+      this.$store.dispatch('loginUser', this.post);
+      setTimeout(function () {
+        if (_this.$store.state.user.user != null) _this.$router.push('/orders');
+      }, 1000);
     }
   }
 });
@@ -6704,7 +6704,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\ni[data-v-ec494456] {\n  font-size: 2em;\n  cursor: pointer;\n}\n.control[data-v-ec494456] {\n  padding: 10px;\n}\n\n", ""]);
+exports.push([module.i, "\ni[data-v-ec494456] {\n  font-size: 2em;\n  cursor: pointer;\n}\n.control[data-v-ec494456] {\n  padding: 10px;\n}\n.container-fluid[data-v-ec494456] {\n    background-color: grey;\n}\n\n\n", ""]);
 
 // exports
 
@@ -55460,8 +55460,29 @@ __webpack_require__.r(__webpack_exports__);
     user: null
   },
   mutations: {
-    increment: function increment(state) {
-      state.count++;
+    setUser: function setUser(state, user) {
+      state.user = user;
+    }
+  },
+  getters: {
+    isUserLogin: function isUserLogin(state) {
+      if (state.user.user != null) return state.user.user;
+      console.log(state);
+      return false;
+    }
+  },
+  actions: {
+    loginUser: function loginUser(context, data) {
+      axios.post("/app/login", data).then(function (response) {
+        var parsed = JSON.stringify(response.data.user);
+        localStorage.setItem('user', parsed);
+        context.commit('setUser', response.data.user);
+        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+      })["catch"](function (e) {});
+    },
+    logout: function logout(context) {
+      context.commit('setUser', null);
+      localStorage.removeItem('user');
     }
   }
 });

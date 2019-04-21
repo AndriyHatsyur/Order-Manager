@@ -37,7 +37,7 @@
 
         methods:{
             logout:function(){
-                localStorage.removeItem('user');
+                this.$store.dispatch('logout');
             },
         }
     }

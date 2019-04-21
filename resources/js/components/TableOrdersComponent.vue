@@ -82,4 +82,9 @@
     padding: 10px;
   }
 
+  .container-fluid {
+      background-color: grey;
+  }
+
+
 </style>

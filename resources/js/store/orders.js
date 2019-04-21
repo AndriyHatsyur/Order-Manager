@@ -29,7 +29,10 @@ export default {
                 })
                 .catch(e => {})
 
-        }
+        },
+
+
+
     }
 
 }

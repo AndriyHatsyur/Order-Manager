@@ -32,18 +32,14 @@
 
         methods:{
             login:function(){
-                console.log(this.post);
-                axios.post(`/app/login`, this.post)
-                    .then(response => {
 
-                        const parsed = JSON.stringify(response.data.user);
-                        localStorage.setItem('user', parsed);
+                this.$store.dispatch('loginUser', this.post);
 
-                        this.$store.state.user = response.data.user;
-                        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+                setTimeout( () => {
+                    if(this.$store.state.user.user != null)
                         this.$router.push('/orders');
-                    })
-                    .catch(e => {})
+                }, 1000);
+
             },
         }
     }

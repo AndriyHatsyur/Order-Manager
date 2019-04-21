@@ -71,7 +71,8 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return ['user' => Auth::user()->load('group'), 'token' => csrf_token()];
+        $user = Auth::user()->load('group', 'roles', 'location');
+        return ['user' => $user , 'token' => csrf_token()];
     }
 
 
