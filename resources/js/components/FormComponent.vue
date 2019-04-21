@@ -14,8 +14,11 @@
             <div class="form-group">
               <label>Location</label>
               <select v-model="post.location" class="form-control" >
-                <option value="1">F2</option>
-                <option value="2">X1</option>
+                <option value="F2">F2</option>
+                <option value="X1">X1</option>
+                <option value="F2">F1</option>
+                <option value="F1">F5</option>
+                <option value="F7">F7</option>
               </select>
             </div>
             <div class="form-group">
@@ -25,15 +28,15 @@
             <div class="form-group">
               <label>Group select</label>
               <select v-model="post.group" class="form-control" >
-                <option value="1">Dispatcher</option>
-                <option value="2">Transfer</option>
+                <option value="Dispatcher">Dispatcher</option>
+                <option value="Transfer">Transfer</option>
               </select>
             </div>
             <div class="form-group">
               <label>Reason</label>
               <select v-model="post.reason" class="form-control" >
-                <option value="1">Prio1</option>
-                <option value="2">Prio2</option>
+                <option value="Prio1">Prio1</option>
+                <option value="Prio2">Prio2</option>
               </select>
             </div>
             <div class="form-group form-check">
@@ -62,11 +65,11 @@
         }),
 
         methods:{
-            send:function(){
-
-              this.$store.dispatch('sendOrderForm', this.post );
-              this.$store.dispatch('loadOrders');
-              this.clear();
+            send: async function(){
+             this.$store.dispatch('sendOrderForm', this.post ).then(()=>{
+               this.$store.dispatch('loadOrders');
+               this.clear();
+             });
 
             },
 

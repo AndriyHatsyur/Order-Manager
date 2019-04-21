@@ -7,6 +7,7 @@ export default {
     mutations: {
         setOrders(state, value) {
             state.order  = value;
+            //console.log(state.order);
         }
     },
 
@@ -26,6 +27,7 @@ export default {
             axios.get(`/app/orders`)
                 .then(response => {  
                     context.commit('setOrders', response.data);
+                    console.log(response);
                 })
                 .catch(e => {})
 

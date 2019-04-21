@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Reason;
 use App\Role;
 use App\Status;
 use Illuminate\Http\Request;
 use App\Order;
 use App\User;
 use App\Group;
+use App\Location;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 class OrderController extends Controller
@@ -35,11 +37,11 @@ class OrderController extends Controller
            Auth::user()->orders()->create([
                'teil'        => $request->teil,
                'parent_id'   => $request->parent,
-               'group_id'    => $request->group,
+               'group_id'    => Group::where('name', $request->group)->first()->id,
                'zonder'      => $request->zonder,
                'status_id'   => Status::where('code', 100)->first()->id,
-               'reason_id'   => $request->reason,
-               'location_id' => $request->location
+               'reason_id'   => Reason::where('name', $request->reason)->first()->id,
+               'location_id' => Location::where('name', $request->location)->first()->id,
 
            ]);
 

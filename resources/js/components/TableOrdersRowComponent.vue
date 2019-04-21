@@ -3,7 +3,7 @@
         <th scope="row">{{order.num}}</th>
         <td>{{order.teil}}</td>
         <td>{{order.user.t_number}}</td>
-        <td>{{order.status.code}}</td>
+        <td>{{order.status.name}}</td>
         <td>{{order.created_at}}</td>
         <td>{{order.group.name}}</td>
         <td>{{order.location.name}}</td>
@@ -56,7 +56,6 @@
         name: "TableOrdersRowComponent",
         props:['order'],
 
-    
         methods:{
 
             setTerm:function (order) {
@@ -64,7 +63,7 @@
                 axios.post(`/app/term`, order)
                     .then(response => {
                         this.order.term = response.data.term;
-                        this.order.status.code = response.data.status.code;
+                        this.order.status.name = response.data.status.name;
                     })
                     .catch(e => {})
 

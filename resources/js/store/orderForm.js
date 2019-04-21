@@ -31,17 +31,15 @@ export default {
     },
 
     actions: {
-        sendOrderForm(context, value) {
+       async sendOrderForm(context, value) {
 
-            context.commit('setValueOrderForm', value);
+            await context.commit('setValueOrderForm', value);
 
-            axios.post(`/app/orders`, context.state.post)
+            await axios.post(`/app/orders`, context.state.post)
                 .then(response => {
                     context.commit('clearValueOrderForm');
                 })
                 .catch(e => {})
-
-            console.log( context.state.post);
             
         },
 

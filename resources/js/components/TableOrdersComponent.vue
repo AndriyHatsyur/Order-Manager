@@ -84,6 +84,7 @@
 
   .container-fluid {
       background-color: grey;
+      min-height: 100vh;
   }
 
 

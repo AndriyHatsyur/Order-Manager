@@ -7,7 +7,6 @@ export default {
         setUser (state, user) {
 
             state.user = user;
-
         }
     },
 
@@ -17,8 +16,6 @@ export default {
 
             if (state.user.user != null)
                 return state.user.user;
-
-            console.log(state);
 
             return false;
         }

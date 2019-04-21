@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
+
+    protected $fillable = ['code', 'name'];
+
+    protected $table = 'statuses';
+
+    public $timestamps = false;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

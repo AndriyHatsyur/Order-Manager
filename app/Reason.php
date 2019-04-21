@@ -10,6 +10,8 @@ class Reason extends Model
         'name',
     ];
 
+    public $timestamps = false;
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
