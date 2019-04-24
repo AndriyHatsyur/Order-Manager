@@ -6,7 +6,8 @@ export default {
             group: '',
             reason: '',
             zonder: false,
-            parent: null
+            parent: null,
+            transport: null
         },
 
     },
@@ -18,6 +19,7 @@ export default {
             state.post.group    = value.group;
             state.post.reason   = value.reason;
             state.post.zonder   = value.zonder;
+            state.post.transport   = value.transport;
         },
 
         clearValueOrderForm(state, value) {
@@ -26,7 +28,8 @@ export default {
             state.post.group    = '';
             state.post.reason   = '';
             state.post.zonder   = false;
-            state.post.parent   = null; 
+            state.post.parent   = null;
+            state.post.transport   = null;
         }
     },
 
@@ -35,11 +38,10 @@ export default {
 
             await context.commit('setValueOrderForm', value);
 
-            await axios.post(`/app/orders`, context.state.post)
-                .then(response => {
-                    context.commit('clearValueOrderForm');
-                })
-                .catch(e => {})
+            await axios.post(`/app/orders`, context.state.post);
+
+            context.commit('clearValueOrderForm');
+
             
         },
 

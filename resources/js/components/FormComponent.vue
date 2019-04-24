@@ -43,6 +43,10 @@
                 <input v-model="post.zonder" type="checkbox" class="form-check-input">
                 <label class="form-check-label" >Zonder</label>
             </div>
+            <div class="form-group form-check">
+              <input v-model="post.transport" type="checkbox" class="form-check-input">
+              <label class="form-check-label" >Transport</label>
+            </div>
             <button  @click.prevent="send" class="btn btn-primary" data-dismiss="modal">Submit</button>
           </form>
           </div>
@@ -59,13 +63,14 @@
                 group: '',
                 reason: '',
                 zonder: false,
-                parent: null
+                parent: null,
+                transport: false
             },
 
         }),
 
         methods:{
-            send: async function(){
+            send: function(){
              this.$store.dispatch('sendOrderForm', this.post ).then(()=>{
                this.$store.dispatch('loadOrders');
                this.clear();
@@ -79,7 +84,8 @@
               this.post.group    = '';
               this.post.reason   = '';
               this.post.zonder   = false;
-              this.post.parent   = null; 
+              this.post.parent   = null;
+              this.post.transport = false;
             }
         }
     }

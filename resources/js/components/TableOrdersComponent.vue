@@ -3,11 +3,11 @@
       <form-component></form-component>
         <div class="row control">
             <div class="col-sm-6">
-                <i class="material-icons btn-success" title="add new order" data-toggle="modal" data-target="#addOrder">add</i>
+                <button class="material-icons btn-success" title="add new order" data-toggle="modal" data-target="#addOrder">add</button>
                 
             </div>
         </div>
-        <table class="table table-bordered  table-hover table-light">
+        <table class="table table-bordered  table-hover ">
             <thead>
             <tr>
                 <th scope="col" v-for="item in headers">{{item.text}}</th>
@@ -74,10 +74,7 @@
 </script>
 
 <style scoped>
-  i {
-    font-size: 2em;
-    cursor: pointer;
-  }
+ 
   .control {
     padding: 10px;
   }
@@ -87,5 +84,15 @@
       min-height: 100vh;
   }
 
+  .table {
+        background: rgba(255,255,255,1);
+    }
+
+  button{
+        padding: 0;
+        border: 0;
+        
+        font-size: 2em;
+    }  
 
 </style>

@@ -10,7 +10,8 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'teil', 'parent_id', 'group_id', 'zonder', 'status_id', 'reason_id', 'location_id', 'term'
+        'teil', 'parent_id', 'group_id', 'zonder', 'status_id',
+        'reason_id', 'location_id', 'term', 'transport'
     ];
 
     /**

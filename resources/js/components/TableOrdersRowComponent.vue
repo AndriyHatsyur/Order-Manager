@@ -10,7 +10,7 @@
         <td>{{order.reason.name}}</td>
         <td>
 
-            <select v-model="order.term" v-if="!order.term" class="form-control" @change="setTerm(order)">
+            <select :disabled="order.status.code > 100" v-model="order.term" v-if="!order.term" class="form-control" @change="setTerm(order)">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -28,24 +28,26 @@
             >
                 local_shipping</i></td>
         <td>
-            <i class="material-icons green"
+            <button :disabled="order.status.code > 200"
+               class="material-icons green"
                title="Add order"
                @click="addChildren(order.id)"
                data-toggle="modal" data-target="#addOrder"
-            >
-                playlist_add</i>
 
-            <i class="material-icons green"
+            >
+                playlist_add</button>
+
+            <button class="material-icons green"
                title="Success"
                @click="success(order.id)"
             >
-                check_circle_outline</i>
+                check_circle_outline</button>
 
-            <i class="material-icons child"
+            <button class="material-icons child"
                title="Cancel"
                @click="cancel(order)"
             >
-                cancel</i>
+                cancel</button>
         </td>
     </tr>
     
@@ -135,6 +137,12 @@
 
     select {
         width: 50px;
+    }
+
+    button{
+        padding: 0;
+        border: 0;
+        background: none;
     }
 
 </style>

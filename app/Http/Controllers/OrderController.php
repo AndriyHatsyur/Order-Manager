@@ -34,14 +34,26 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
+        if ($request->group == 'Transfer')
+        {
+            $statusId = Status::where('code', 300)->first()->id;
+        }
+        else
+        {
+            $statusId = Status::where('code', 100)->first()->id;
+        }
+
+
+
            Auth::user()->orders()->create([
                'teil'        => $request->teil,
                'parent_id'   => $request->parent,
                'group_id'    => Group::where('name', $request->group)->first()->id,
                'zonder'      => $request->zonder,
-               'status_id'   => Status::where('code', 100)->first()->id,
+               'status_id'   => $statusId,
                'reason_id'   => Reason::where('name', $request->reason)->first()->id,
                'location_id' => Location::where('name', $request->location)->first()->id,
+               'transport'   => $request->transport,
 
            ]);
 
@@ -53,11 +65,14 @@ class OrderController extends Controller
        $term = $date->addHours($request->term);
 
        $order = Order::find($request->id);
-       
-       $order->term = $term;
-       $order->status_id = Status::where('code', 200)->first()->id;
 
-       $order->save();
+       if ($order->status->code == 100){
+
+           $order->term = $term;
+           $order->status_id = Status::where('code', 200)->first()->id;
+
+           $order->save();
+       }
 
        return Order::find($request->id)->load('status');
 
@@ -83,6 +98,10 @@ class OrderController extends Controller
 
    }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
    public function success(Request $request)
    {
        $order = Order::find($request->id);
@@ -94,8 +113,15 @@ class OrderController extends Controller
            return $order->children;
        }
 
-
-       $order->status_id = Status::where('code', 400)->first()->id;
+       if ($order->transport == true && $order->status->code <= 200)
+       {
+           $order->status_id = Status::where('code', 300)->first()->id;
+           $order->group_id = Group::where('name', 'Transfer')->first()->id;
+       }
+       else
+       {
+           $order->status_id = Status::where('code', 400)->first()->id;
+       }
 
        $order->save();
 

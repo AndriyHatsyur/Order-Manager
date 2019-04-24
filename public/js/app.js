@@ -1808,14 +1808,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+//
+//
+//
+//
 //
 //
 //
@@ -1877,41 +1873,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         group: '',
         reason: '',
         zonder: false,
-        parent: null
+        parent: null,
+        transport: false
       }
     };
   },
   methods: {
-    send: function () {
-      var _send = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var _this = this;
+    send: function send() {
+      var _this = this;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                this.$store.dispatch('sendOrderForm', this.post).then(function () {
-                  _this.$store.dispatch('loadOrders');
+      this.$store.dispatch('sendOrderForm', this.post).then(function () {
+        _this.$store.dispatch('loadOrders');
 
-                  _this.clear();
-                });
-
-              case 1:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function send() {
-        return _send.apply(this, arguments);
-      }
-
-      return send;
-    }(),
+        _this.clear();
+      });
+    },
     clear: function clear() {
       this.post.location = '';
       this.post.teil = '';
@@ -1919,6 +1895,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.post.reason = '';
       this.post.zonder = false;
       this.post.parent = null;
+      this.post.transport = false;
     }
   }
 });
@@ -2138,6 +2115,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -6752,7 +6731,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\ni[data-v-ec494456] {\n  font-size: 2em;\n  cursor: pointer;\n}\n.control[data-v-ec494456] {\n  padding: 10px;\n}\n.container-fluid[data-v-ec494456] {\n    background-color: grey;\n    min-height: 100vh;\n}\n\n\n", ""]);
+exports.push([module.i, "\n.control[data-v-ec494456] {\n  padding: 10px;\n}\n.container-fluid[data-v-ec494456] {\n    background-color: grey;\n    min-height: 100vh;\n}\n.table[data-v-ec494456] {\n      background: rgba(255,255,255,1);\n}\nbutton[data-v-ec494456]{\n      padding: 0;\n      border: 0;\n      \n      font-size: 2em;\n}  \n\n", ""]);
 
 // exports
 
@@ -6771,7 +6750,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.child[data-v-0b05449b], .child[data-v-0b05449b]:hover {\n     color: red !important;\n}\ni[data-v-0b05449b] {\n font-size: 2em;\n cursor: pointer;\n}\n.green[data-v-0b05449b] {\n     color: green !important;\n}\n.black[data-v-0b05449b] {\n     color: #000;\n}\nselect[data-v-0b05449b] {\n     width: 50px;\n}\n\n", ""]);
+exports.push([module.i, "\n.child[data-v-0b05449b], .child[data-v-0b05449b]:hover {\n     color: red !important;\n}\ni[data-v-0b05449b] {\n font-size: 2em;\n cursor: pointer;\n}\n.green[data-v-0b05449b] {\n     color: green !important;\n}\n.black[data-v-0b05449b] {\n     color: #000;\n}\nselect[data-v-0b05449b] {\n     width: 50px;\n}\nbutton[data-v-0b05449b]{\n     padding: 0;\n     border: 0;\n     background: none;\n}\n\n", ""]);
 
 // exports
 
@@ -39211,6 +39190,54 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
+              _c("div", { staticClass: "form-group form-check" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.post.transport,
+                      expression: "post.transport"
+                    }
+                  ],
+                  staticClass: "form-check-input",
+                  attrs: { type: "checkbox" },
+                  domProps: {
+                    checked: Array.isArray(_vm.post.transport)
+                      ? _vm._i(_vm.post.transport, null) > -1
+                      : _vm.post.transport
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$a = _vm.post.transport,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 &&
+                            _vm.$set(_vm.post, "transport", $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            _vm.$set(
+                              _vm.post,
+                              "transport",
+                              $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                            )
+                        }
+                      } else {
+                        _vm.$set(_vm.post, "transport", $$c)
+                      }
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { staticClass: "form-check-label" }, [
+                  _vm._v("Transport")
+                ])
+              ]),
+              _vm._v(" "),
               _c(
                 "button",
                 {
@@ -39448,34 +39475,30 @@ var render = function() {
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
-      _c(
-        "table",
-        { staticClass: "table table-bordered  table-hover table-light" },
-        [
-          _c("thead", [
-            _c(
-              "tr",
-              _vm._l(_vm.headers, function(item) {
-                return _c("th", { attrs: { scope: "col" } }, [
-                  _vm._v(_vm._s(item.text))
-                ])
-              }),
-              0
-            )
-          ]),
-          _vm._v(" "),
+      _c("table", { staticClass: "table table-bordered  table-hover " }, [
+        _c("thead", [
           _c(
-            "tbody",
-            _vm._l(_vm.orders, function(order) {
-              return _c("row-component", {
-                key: order.id,
-                attrs: { order: order }
-              })
+            "tr",
+            _vm._l(_vm.headers, function(item) {
+              return _c("th", { attrs: { scope: "col" } }, [
+                _vm._v(_vm._s(item.text))
+              ])
             }),
-            1
+            0
           )
-        ]
-      )
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.orders, function(order) {
+            return _c("row-component", {
+              key: order.id,
+              attrs: { order: order }
+            })
+          }),
+          1
+        )
+      ])
     ],
     1
   )
@@ -39488,7 +39511,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row control" }, [
       _c("div", { staticClass: "col-sm-6" }, [
         _c(
-          "i",
+          "button",
           {
             staticClass: "material-icons btn-success",
             attrs: {
@@ -39555,6 +39578,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control",
+              attrs: { disabled: _vm.order.status.code > 100 },
               on: {
                 change: [
                   function($event) {
@@ -39612,10 +39636,11 @@ var render = function() {
     _vm._v(" "),
     _c("td", [
       _c(
-        "i",
+        "button",
         {
           staticClass: "material-icons green",
           attrs: {
+            disabled: _vm.order.status.code > 200,
             title: "Add order",
             "data-toggle": "modal",
             "data-target": "#addOrder"
@@ -39630,7 +39655,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "i",
+        "button",
         {
           staticClass: "material-icons green",
           attrs: { title: "Success" },
@@ -39644,7 +39669,7 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "i",
+        "button",
         {
           staticClass: "material-icons child",
           attrs: { title: "Cancel" },
@@ -56177,7 +56202,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       group: '',
       reason: '',
       zonder: false,
-      parent: null
+      parent: null,
+      transport: null
     }
   },
   mutations: {
@@ -56187,6 +56213,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       state.post.group = value.group;
       state.post.reason = value.reason;
       state.post.zonder = value.zonder;
+      state.post.transport = value.transport;
     },
     clearValueOrderForm: function clearValueOrderForm(state, value) {
       state.post.location = '';
@@ -56195,6 +56222,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       state.post.reason = '';
       state.post.zonder = false;
       state.post.parent = null;
+      state.post.transport = null;
     }
   },
   actions: {
@@ -56211,11 +56239,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 _context.next = 4;
-                return axios.post("/app/orders", context.state.post).then(function (response) {
-                  context.commit('clearValueOrderForm');
-                })["catch"](function (e) {});
+                return axios.post("/app/orders", context.state.post);
 
               case 4:
+                context.commit('clearValueOrderForm');
+
+              case 5:
               case "end":
                 return _context.stop();
             }
