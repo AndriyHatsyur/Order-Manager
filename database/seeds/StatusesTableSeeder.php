@@ -24,6 +24,16 @@ class StatusesTableSeeder extends Seeder
         ]);
 
         Status::create([
+            'code' => 250,
+            'name' => 'Incomplete'
+        ]);
+
+        Status::create([
+            'code' => 275,
+            'name' => 'No-component'
+        ]);
+
+        Status::create([
             'code' => 300,
             'name' => 'In-Transport'
         ]);

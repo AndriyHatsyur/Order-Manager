@@ -38,7 +38,9 @@ export default {
 
             await context.commit('setValueOrderForm', value);
 
-            await axios.post(`/app/orders`, context.state.post);
+            const r = await axios.post(`/app/orders`, context.state.post);
+
+            console.log(r.data);
 
             context.commit('clearValueOrderForm');
 

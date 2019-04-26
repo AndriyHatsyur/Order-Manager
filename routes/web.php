@@ -12,7 +12,9 @@
 */
 
 
-Route::get('/',function (Request $request){
+
+
+Route::get('/',function (){
 
 
     return view('main');

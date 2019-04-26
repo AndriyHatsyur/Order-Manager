@@ -2209,6 +2209,8 @@ __webpack_require__.r(__webpack_exports__);
       };
       axios.post("/app/orders-success", post).then(function (response) {
         _this3.$store.dispatch('loadOrders');
+
+        console.log(response);
       })["catch"](function (e) {});
     }
   }
@@ -39548,7 +39550,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("tr", { class: { child: _vm.order.parent_id } }, [
-    _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(_vm.order.num))]),
+    _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(_vm.order.count))]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.order.teil))]),
     _vm._v(" "),
@@ -39556,7 +39558,7 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.order.status.name))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.order.created_at))]),
+    _c("td", [_vm._v(_vm._s(_vm.order.created_at.substring(0, 16)))]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.order.group.name))]),
     _vm._v(" "),
@@ -39578,7 +39580,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control",
-              attrs: { disabled: _vm.order.status.code > 100 },
+              attrs: { disabled: _vm.order.status.code >= 300 },
               on: {
                 change: [
                   function($event) {
@@ -39614,7 +39616,17 @@ var render = function() {
               _c("option", { attrs: { value: "5" } }, [_vm._v("5")])
             ]
           )
-        : _c("span", [_vm._v(_vm._s(_vm.order.term))])
+        : _c(
+            "span",
+            {
+              on: {
+                click: function($event) {
+                  _vm.order.term = null
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm.order.term.substring(0, 16)))]
+          )
     ]),
     _vm._v(" "),
     _c("td", [
@@ -39640,7 +39652,7 @@ var render = function() {
         {
           staticClass: "material-icons green",
           attrs: {
-            disabled: _vm.order.status.code > 200,
+            disabled: _vm.order.status.code > 299,
             title: "Add order",
             "data-toggle": "modal",
             "data-target": "#addOrder"
@@ -56230,6 +56242,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _sendOrderForm = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(context, value) {
+        var r;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -56242,9 +56255,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return axios.post("/app/orders", context.state.post);
 
               case 4:
+                r = _context.sent;
+                console.log(r.data);
                 context.commit('clearValueOrderForm');
 
-              case 5:
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -56278,7 +56293,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     setOrders: function setOrders(state, value) {
-      state.order = value; //console.log(state.order);
+      state.order = value;
     }
   },
   getters: {
@@ -56295,7 +56310,6 @@ __webpack_require__.r(__webpack_exports__);
     loadOrders: function loadOrders(context) {
       axios.get("/app/orders").then(function (response) {
         context.commit('setOrders', response.data);
-        console.log(response);
       })["catch"](function (e) {});
     }
   }

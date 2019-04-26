@@ -12,6 +12,7 @@ use App\Group;
 use App\Location;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+
 class OrderController extends Controller
 {
     /**
@@ -43,9 +44,7 @@ class OrderController extends Controller
             $statusId = Status::where('code', 100)->first()->id;
         }
 
-
-
-           Auth::user()->orders()->create([
+        $order = Auth::user()->orders()->create([
                'teil'        => $request->teil,
                'parent_id'   => $request->parent,
                'group_id'    => Group::where('name', $request->group)->first()->id,
@@ -57,6 +56,8 @@ class OrderController extends Controller
 
            ]);
 
+        $this->setParentStatus($order, 275);
+
    }
 
    public function setTerm(Request $request)
@@ -66,10 +67,13 @@ class OrderController extends Controller
 
        $order = Order::find($request->id);
 
-       if ($order->status->code == 100){
+       if ($order->status->code < 300){
 
            $order->term = $term;
-           $order->status_id = Status::where('code', 200)->first()->id;
+           if ($order->status->code == 100)
+           {
+               $order->status_id = Status::where('code', 200)->first()->id;
+           }
 
            $order->save();
        }
@@ -94,8 +98,6 @@ class OrderController extends Controller
 
        $order->save();
 
-       return "ok";
-
    }
 
     /**
@@ -106,12 +108,14 @@ class OrderController extends Controller
    {
        $order = Order::find($request->id);
 
+
        if ($this->hasChildren($order))
        {
            $order = $order->load('children');
 
            return $order->children;
        }
+
 
        if ($order->transport == true && $order->status->code <= 200)
        {
@@ -125,7 +129,17 @@ class OrderController extends Controller
 
        $order->save();
 
-       return "ok";
+       if ($order->parent_id != null)
+       {
+           $hasParent = $this->hasChildren($order->parent);
+
+           if ($hasParent != true )
+           {
+               $this->setParentStatus($order, 200);
+
+           }
+       }
+
    }
 
     /**
@@ -180,18 +194,18 @@ class OrderController extends Controller
      * @param array $data
      * @return array
      */
-    private function data(\Illuminate\Support\Collection $orders, &$data = [], &$num = 1): array
+    private function data(\Illuminate\Support\Collection $orders, &$data = [], &$counter = 1): array
     {
         foreach ($orders as $order) {
 
-            $order->num = $num;
+            $order->count = $counter;
 
             $order->load('status', 'group', 'user', 'children', 'location', 'reason');
 
             if ($order->status->code < 400 )
             {
                 $data[] = $order;
-                $num++;
+                $counter++;
             }
 
 
@@ -206,17 +220,33 @@ class OrderController extends Controller
      * @param Order $order
      * @return bool
      */
-    private function hasChildren(Order $order)
+    private function hasChildren($order)
     {
+
         foreach ($order->children as $children)
         {
             if ($children->status->code < 400 )
                 return true;
-
         }
 
-        if (isset($children))
-            $this->hasChildren($children);
+        return false;
+    }
+
+    /**
+     * @param Order $order
+     * @param int $statusCode
+     * @return bool
+     */
+    private function setParentStatus(Order $order, $statusCode)
+    {
+        if ($order->parent_id != null)
+        {
+            $parent = $order->parent;
+            $parent->status_id = Status::where('code', $statusCode)->first()->id;
+            $parent->save();
+
+            return true;
+        }
 
         return false;
     }

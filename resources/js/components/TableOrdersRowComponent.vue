@@ -1,23 +1,23 @@
 <template>
     <tr :class="{ child: order.parent_id }">
-        <th scope="row">{{order.num}}</th>
+        <th scope="row">{{order.count}}</th>
         <td>{{order.teil}}</td>
         <td>{{order.user.t_number}}</td>
         <td>{{order.status.name}}</td>
-        <td>{{order.created_at}}</td>
+        <td>{{order.created_at.substring(0,16)}}</td>
         <td>{{order.group.name}}</td>
         <td>{{order.location.name}}</td>
         <td>{{order.reason.name}}</td>
         <td>
 
-            <select :disabled="order.status.code > 100" v-model="order.term" v-if="!order.term" class="form-control" @change="setTerm(order)">
+            <select :disabled="order.status.code >= 300" v-model="order.term" v-if="!order.term" class="form-control" @change="setTerm(order)">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>
-            <span v-else>{{order.term}}</span>
+            <span v-else @click="order.term = null">{{order.term.substring(0,16)}}</span>
         </td>
         <td>
             <i class="material-icons black "
@@ -28,7 +28,7 @@
             >
                 local_shipping</i></td>
         <td>
-            <button :disabled="order.status.code > 200"
+            <button :disabled="order.status.code > 299"
                class="material-icons green"
                title="Add order"
                @click="addChildren(order.id)"
@@ -110,6 +110,7 @@
                 axios.post(`/app/orders-success`, post)
                     .then(response => {
                         this.$store.dispatch('loadOrders');
+                        console.log(response);
                     })
                     .catch(e => {})
             }

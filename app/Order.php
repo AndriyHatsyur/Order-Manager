@@ -39,6 +39,13 @@ class Order extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function parent()
+    {
+        return $this->belongsTo('App\Order');
+    }
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function location()
