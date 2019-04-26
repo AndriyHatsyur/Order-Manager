@@ -2005,10 +2005,9 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      this.$store.dispatch('loginUser', this.post);
-      setTimeout(function () {
-        if (_this.$store.state.user.user != null) _this.$router.push('/orders');
-      }, 1000);
+      this.$store.dispatch('loginUser', this.post).then(function () {
+        _this.$router.push('/orders');
+      });
     }
   }
 });
@@ -56618,6 +56617,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
     user: null
@@ -56634,14 +56641,49 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    loginUser: function loginUser(context, data) {
-      axios.post("/app/login", data).then(function (response) {
-        var parsed = JSON.stringify(response.data.user);
-        localStorage.setItem('user', parsed);
-        context.commit('setUser', response.data.user);
-        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
-      })["catch"](function (e) {});
-    },
+    loginUser: function () {
+      var _loginUser = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(context, data) {
+        var response, parsed;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios.post("/app/login", data);
+
+              case 2:
+                response = _context.sent;
+                _context.next = 5;
+                return JSON.stringify(response.data.user);
+
+              case 5:
+                parsed = _context.sent;
+                _context.next = 8;
+                return localStorage.setItem('user', parsed);
+
+              case 8:
+                _context.next = 10;
+                return context.commit('setUser', response.data.user);
+
+              case 10:
+                window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function loginUser(_x, _x2) {
+        return _loginUser.apply(this, arguments);
+      }
+
+      return loginUser;
+    }(),
     logout: function logout(context) {
       context.commit('setUser', null);
       localStorage.removeItem('user');

@@ -33,13 +33,9 @@
         methods:{
             login:function(){
 
-                this.$store.dispatch('loginUser', this.post);
-
-                setTimeout( () => {
-                    if(this.$store.state.user.user != null)
-                        this.$router.push('/orders');
-                }, 1000);
-
+                this.$store.dispatch('loginUser', this.post).then(()=>{
+                    this.$router.push('/orders');
+                });
             },
         }
     }

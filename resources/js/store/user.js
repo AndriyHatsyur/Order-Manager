@@ -24,21 +24,18 @@ export default {
 
     actions: {
 
-         loginUser (context, data){
+        async loginUser (context, data){
 
-            axios.post(`/app/login`, data)
-                .then(response => {
+           const response = await axios.post(`/app/login`, data);
 
-                    const parsed = JSON.stringify(response.data.user);
-                    localStorage.setItem('user', parsed);
+           const parsed = await JSON.stringify(response.data.user);
 
-                    context.commit('setUser', response.data.user);
+           await  localStorage.setItem('user', parsed);
 
-                    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+           await context.commit('setUser', response.data.user);
 
-                })
+           window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
 
-                .catch(e => {})
         },
 
         logout(context){
