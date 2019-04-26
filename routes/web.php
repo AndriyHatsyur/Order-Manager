@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 
 	Route::get('/orders', 'OrderController@index')->name('orders');
 	Route::post('/orders', 'OrderController@create');
-    Route::delete('/orders', 'OrderController@cancel');
+    Route::post('/orders-cancel', 'OrderController@cancel');
     Route::post('/orders-success', 'OrderController@success');
     Route::post('/zonder/', 'OrderController@zonder');
 

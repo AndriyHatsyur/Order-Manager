@@ -11,7 +11,7 @@
                         :to="link.url"
                         :key="link.title"
                                     >
-                    {{link.title}}
+                    <i class="material-icons" :title="link.title">{{link.icon}}</i>
                 </router-link>
                 <a class="nav-item nav-link" href="app/logout" title="Logout" @click="logout"><i class="material-icons">
                     input
@@ -28,9 +28,9 @@
         data () {
             return {
                 links: [
-                    {title:'Orders', icon:'', url:'/orders'},
-                    {title:'Group', icon:'', url:'/group'},
-                    {title:'Login', icon:'', url:'/login'},
+                    {title:'Orders list', icon:'format_list_numbered', url:'/orders'},
+                    {title:'Activities list', icon:'assignment', url:'/activities'},
+                    {title:'Settings', icon:'settings', url:'/settings'},
                 ]
             }
         },
@@ -53,7 +53,7 @@
     .navbar-nav .nav-link  {
         font-size: 1.1em;
         height: 60px;
-        line-height: 2.6;
+        line-height: 60px;
         padding-left: 30px;
         padding-right: 30px;
 
@@ -63,13 +63,18 @@
 
     }
 
+    .active {
+        border-left: 1px solid gray;
+        border-right: 1px solid gray;
+    }
+
     .navbar {
         height: 60px;
     }
 
     i {
         font-size: 1.7em;
-        padding-top: 7px;
+
     }
 
 

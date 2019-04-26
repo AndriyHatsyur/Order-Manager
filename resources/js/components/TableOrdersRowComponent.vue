@@ -10,7 +10,7 @@
         <td>{{order.reason.name}}</td>
         <td>
 
-            <select :disabled="order.status.code >= 300" v-model="order.term" v-if="!order.term" class="form-control" @change="setTerm(order)">
+            <select :disabled="order.status.code >= 300" v-model="order.term" v-if="!order.term" class="form-control" @change="setTerm">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -22,30 +22,31 @@
         <td>
             <i class="material-icons black "
                title="Zonder"
-               @click="zonder(order)"
+               @click="zonder"
                v-bind:class="{ 'green': order.zonder }"
 
             >
                 local_shipping</i></td>
         <td>
             <button :disabled="order.status.code > 299"
-               class="material-icons green"
-               title="Add order"
-               @click="addChildren(order.id)"
-               data-toggle="modal" data-target="#addOrder"
+                    :class="{ 'green': order.status.code < 300}"
+                    class="material-icons "
+                    title="Add order"
+                    @click="addChildren"
+                    data-toggle="modal" data-target="#addOrder"
 
             >
                 playlist_add</button>
 
             <button class="material-icons green"
                title="Success"
-               @click="success(order.id)"
+               @click="success"
             >
                 check_circle_outline</button>
 
             <button class="material-icons child"
                title="Cancel"
-               @click="cancel(order)"
+               @click="cancel"
             >
                 cancel</button>
         </td>
@@ -60,9 +61,9 @@
 
         methods:{
 
-            setTerm:function (order) {
+            setTerm:function () {
 
-                axios.post(`/app/term`, order)
+                axios.post(`/app/term`, this.order)
                     .then(response => {
                         this.order.term = response.data.term;
                         this.order.status.name = response.data.status.name;
@@ -71,23 +72,18 @@
 
             },
 
-            cancel: function (order) {
+            cancel: function () {
 
-                const post = {
-                    id: order.id,
-                    _method: 'delete'
-                }
-
-                axios.post(`/app/orders`, post)
+                axios.post(`/app/orders-cancel`, this.order)
                     .then(response => {
                         this.$store.dispatch('loadOrders');
                     })
                     .catch(e => {})
             },
 
-            zonder: function (order) {
+            zonder: function () {
 
-                axios.post(`/app/zonder`, order)
+                axios.post(`/app/zonder`, this.order)
                     .then(response => {
 
                         order.zonder = !order.zonder;
@@ -96,18 +92,14 @@
                     .catch(e => {})
             },
 
-            addChildren: function (id) {
+            addChildren: function () {
 
-                this.$store.state.orderForm.post.parent = id;
+                this.$store.state.orderForm.post.parent = this.order.id;
 
             },
-            success: function (id) {
-                const post = {
-                    id: id,
+            success: function () {
 
-                }
-
-                axios.post(`/app/orders-success`, post)
+                axios.post(`/app/orders-success`, this.order)
                     .then(response => {
                         this.$store.dispatch('loadOrders');
                         console.log(response);
@@ -140,10 +132,12 @@
         width: 50px;
     }
 
-    button{
+    button, button:active:hover:focus{
         padding: 0;
-        border: 0;
+        border: none;
         background: none;
     }
+
+
 
 </style>

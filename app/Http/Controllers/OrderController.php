@@ -200,17 +200,15 @@ class OrderController extends Controller
 
             $order->count = $counter;
 
-            $order->load('status', 'group', 'user', 'children', 'location', 'reason');
+            $order->load('status', 'group', 'user', 'location', 'reason');
 
             if ($order->status->code < 400 )
             {
                 $data[] = $order;
                 $counter++;
+                $this->data($order->children, $data, $counter);
             }
 
-
-
-            $this->data($order->children, $data, $num);
         }
 
         return $data;
@@ -220,7 +218,7 @@ class OrderController extends Controller
      * @param Order $order
      * @return bool
      */
-    private function hasChildren($order)
+    private function hasChildren(Order $order)
     {
 
         foreach ($order->children as $children)

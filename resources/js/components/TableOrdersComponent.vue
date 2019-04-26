@@ -4,13 +4,13 @@
         <div class="row control">
             <div class="col-sm-6">
                 <button class="material-icons btn-success" title="add new order" data-toggle="modal" data-target="#addOrder">add</button>
-                
+
             </div>
         </div>
         <table class="table table-bordered  table-hover ">
             <thead>
             <tr>
-                <th scope="col" v-for="item in headers">{{item.text}}</th>
+                <header-component v-for="item in headers" :item="item" :key="item.text"></header-component>
             </tr>
             </thead>
             <tbody>
@@ -26,22 +26,21 @@
 
   import Form from './FormComponent.vue'
   import Row from './TableOrdersRowComponent.vue'
+  import Header from './TableHeaderComponent.vue'
 
   export default {
 
     components: {
-
-      'form-component': Form,
+        'form-component': Form,
         'row-component': Row,
+        'header-component': Header,
 
     },
     data () {
       return {
         headers: [
-
-          {text: '#', value: 'num'},
+          {text: '#', value: 'count'},
           {text: 'Teil-numme', value: 'teil'},
-
           { text: 'Users', value: 'user.t_number'},
           { text: 'Status', value: 'status.code' },
           { text: 'Create', value: 'created_at' },
@@ -59,17 +58,18 @@
     },
 
     computed: {
-    
-    orders: function () {
-     
-      return this.$store.getters.getAlltOrders;
-    }
-  },
 
-    created()  {
-      this.$store.dispatch('loadOrders');
-      
+        orders: function () {
+
+          return this.$store.getters.getAlltOrders;
+        }
     },
+
+      created() {
+          this.$store.dispatch('loadOrders');
+      },
+
+
   }
 </script>
 
@@ -80,8 +80,8 @@
   }
 
   .container-fluid {
-      background-color: grey;
-      min-height: 100vh;
+      background-color: #cccccc;
+      min-height: 90vh;
   }
 
   .table {
