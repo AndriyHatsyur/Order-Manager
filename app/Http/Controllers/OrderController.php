@@ -82,6 +82,10 @@ class OrderController extends Controller
 
    }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
    public function cancel(Request $request)
    {
        $order = Order::find($request->id);
@@ -142,16 +146,6 @@ class OrderController extends Controller
 
    }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-   public function destroy(Request $request)
-    {
-        Order::destroy($request->id);
-
-        return redirect('orders');
-    }
 
     /***
      * @param Request $request
@@ -165,7 +159,6 @@ class OrderController extends Controller
 
         $order->save();
 
-        return redirect('orders');
     }
 
     /**
@@ -180,14 +173,6 @@ class OrderController extends Controller
         return $data;
     }
 
-    public function groupOrders()
-    {
-        $orders = Auth::user()->group->orders()->where('parent_id', NULL)->get()->load('children', 'user', 'group');
-
-        $data = $this->data($orders);
-
-        return $data;
-    }
 
     /**
      * @param \Illuminate\Support\Collection $orders

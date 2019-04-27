@@ -1863,7 +1863,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2116,6 +2115,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2159,16 +2162,34 @@ __webpack_require__.r(__webpack_exports__);
         value: 'zonder'
       }, {
         text: 'Control'
-      }]
+      }],
+      params: ''
     };
   },
   computed: {
     orders: function orders() {
       return this.$store.getters.getAlltOrders;
+    },
+    userGroupName: function userGroupName() {
+      return this.$store.getters.userGroupName;
+    },
+    userGroupId: function userGroupId() {
+      return this.$store.getters.userGroupId;
     }
   },
   created: function created() {
     this.$store.dispatch('loadOrders');
+  },
+  methods: {
+    search: function search() {
+      this.$store.commit('search', this.params);
+    },
+    userGroupOrders: function userGroupOrders() {
+      this.$store.commit('userGroupOrders', this.userGroupId);
+    },
+    allOrders: function allOrders() {
+      this.$store.commit('allOrders');
+    }
   }
 });
 
@@ -2234,11 +2255,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TableOrdersRowComponent",
   props: ['order'],
@@ -2246,34 +2262,26 @@ __webpack_require__.r(__webpack_exports__);
     setTerm: function setTerm() {
       var _this = this;
 
-      axios.post("/app/term", this.order).then(function (response) {
+      this.$store.dispatch('setTerm', this.order).then(function (response) {
         _this.order.term = response.data.term;
         _this.order.status.name = response.data.status.name;
-      })["catch"](function (e) {});
+      });
     },
     cancel: function cancel() {
-      var _this2 = this;
-
-      axios.post("/app/orders-cancel", this.order).then(function (response) {
-        _this2.$store.dispatch('loadOrders');
-      })["catch"](function (e) {});
+      this.$store.dispatch('cancel', this.order);
     },
     zonder: function zonder() {
-      axios.post("/app/zonder", this.order).then(function (response) {
-        order.zonder = !order.zonder;
-      })["catch"](function (e) {});
+      var _this2 = this;
+
+      this.$store.dispatch('zonder', this.order).then(function () {
+        _this2.order.zonder = !_this2.order.zonder;
+      });
     },
     addChildren: function addChildren() {
       this.$store.state.orderForm.post.parent = this.order.id;
     },
     success: function success() {
-      var _this3 = this;
-
-      axios.post("/app/orders-success", this.order).then(function (response) {
-        _this3.$store.dispatch('loadOrders');
-
-        console.log(response);
-      })["catch"](function (e) {});
+      this.$store.dispatch('success', this.order);
     }
   }
 });
@@ -6814,7 +6822,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.control[data-v-ec494456] {\n  padding: 10px;\n}\n.container-fluid[data-v-ec494456] {\n    background-color: #cccccc;\n    min-height: 90vh;\n}\n.table[data-v-ec494456] {\n      background: rgba(255,255,255,1);\n}\nbutton[data-v-ec494456]{\n      padding: 0;\n      border: 0;\n      \n      font-size: 2em;\n}  \n\n", ""]);
+exports.push([module.i, "\n.control[data-v-ec494456] {\n  padding: 10px;\n}\n.container-fluid[data-v-ec494456] {\n    background-color: #cccccc;\n    min-height: 90vh;\n}\n.table[data-v-ec494456] {\n      background: rgba(255,255,255,1);\n}\nbutton[data-v-ec494456]{\n      padding: 0;\n      border: 0;\n      font-size: 2em;\n}\n.right[data-v-ec494456]{\n      position: relative;\n}\ninput[data-v-ec494456]{\n      position: absolute;\n      right: 5px;\n}\n", ""]);
 
 // exports
 
@@ -39144,9 +39152,9 @@ var render = function() {
                     _vm._v(" "),
                     _c("option", { attrs: { value: "X1" } }, [_vm._v("X1")]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "F2" } }, [_vm._v("F1")]),
+                    _c("option", { attrs: { value: "F1" } }, [_vm._v("F1")]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "F1" } }, [_vm._v("F5")]),
+                    _c("option", { attrs: { value: "F5" } }, [_vm._v("F5")]),
                     _vm._v(" "),
                     _c("option", { attrs: { value: "F7" } }, [_vm._v("F7")])
                   ]
@@ -39647,7 +39655,60 @@ var render = function() {
     [
       _c("form-component"),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "row control" }, [
+        _c("div", { staticClass: "col-sm-6" }, [
+          _c(
+            "button",
+            {
+              staticClass: "material-icons btn-success",
+              attrs: {
+                title: "add new order",
+                "data-toggle": "modal",
+                "data-target": "#addOrder"
+              }
+            },
+            [_vm._v("add")]
+          ),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.allOrders } }, [_vm._v("All")]),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.userGroupOrders } }, [
+            _vm._v(_vm._s(_vm.userGroupName))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-6 right" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.params,
+                expression: "params"
+              }
+            ],
+            attrs: { type: "text", placeholder: "Search" },
+            domProps: { value: _vm.params },
+            on: {
+              keyup: function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.search($event)
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.params = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
       _vm._v(" "),
       _c("table", { staticClass: "table table-bordered  table-hover " }, [
         _c("thead", [
@@ -39678,29 +39739,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row control" }, [
-      _c("div", { staticClass: "col-sm-6" }, [
-        _c(
-          "button",
-          {
-            staticClass: "material-icons btn-success",
-            attrs: {
-              title: "add new order",
-              "data-toggle": "modal",
-              "data-target": "#addOrder"
-            }
-          },
-          [_vm._v("add")]
-        )
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -56540,11 +56579,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
-    order: []
+    order: [],
+    data: []
   },
   mutations: {
     setOrders: function setOrders(state, value) {
-      state.order = value;
+      state.order = state.data = value;
+    },
+    userGroupOrders: function userGroupOrders(state, userGroupId) {
+      state.order = state.data.filter(function (order) {
+        return order.group_id == userGroupId;
+      });
+    },
+    allOrders: function allOrders(state) {
+      state.order = state.data;
+    },
+    search: function search(state, params) {
+      if (params != '') {
+        state.order = state.data.filter(function (order) {
+          if (String(order.teil).match(params)) return order.teil;
+          if (String(order.user.t_number).match(params)) return order.user.t_number;
+          if (String(order.status.name).toLocaleLowerCase().match(params)) return order.status.name;
+          if (String(order.group.name).toLocaleLowerCase().match(params)) return order.group.name;
+          if (String(order.location.name).toLocaleLowerCase().match(params)) return order.location.name;
+          if (String(order.reason.name).toLocaleLowerCase().match(params)) return order.reason.name;
+        });
+      } else {
+        state.order = state.data;
+      }
     },
     sortOrders: function sortOrders(state, value) {
       var param = value.value.split('.');
@@ -56566,7 +56628,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getAlltOrders: function getAlltOrders(state) {
       return state.order;
     },
-    getMytOrders: function getMytOrders(state) {
+    getMyGroupOrders: function getMyGroupOrders(state) {
       return state.order.filter(function (orde) {
         return orde.id < 20;
       });
@@ -56602,6 +56664,95 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return loadOrders;
+    }(),
+    zonder: function zonder(context, order) {
+      axios.post("/app/zonder", order);
+    },
+    success: function () {
+      var _success = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(context, order) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post("/app/orders-success", order);
+
+              case 2:
+                context.dispatch('loadOrders');
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function success(_x2, _x3) {
+        return _success.apply(this, arguments);
+      }
+
+      return success;
+    }(),
+    cancel: function () {
+      var _cancel = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(context, order) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.post("/app/orders-cancel", order);
+
+              case 2:
+                context.dispatch('loadOrders');
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function cancel(_x4, _x5) {
+        return _cancel.apply(this, arguments);
+      }
+
+      return cancel;
+    }(),
+    setTerm: function () {
+      var _setTerm = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(context, order) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios.post("/app/term", order);
+
+              case 2:
+                response = _context4.sent;
+                return _context4.abrupt("return", response);
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      function setTerm(_x6, _x7) {
+        return _setTerm.apply(this, arguments);
+      }
+
+      return setTerm;
     }()
   }
 });
@@ -56636,8 +56787,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   getters: {
     isUserLogin: function isUserLogin(state) {
-      if (state.user.user != null) return state.user.user;
+      if (state.user != null) return true;
       return false;
+    },
+    userGroupName: function userGroupName(state) {
+      return state.user.group.name;
+    },
+    userGroupId: function userGroupId(state) {
+      return state.user.group_id;
     }
   },
   actions: {
@@ -56655,22 +56812,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 response = _context.sent;
-                _context.next = 5;
+                console.log(response.data.user);
+                _context.next = 6;
                 return JSON.stringify(response.data.user);
 
-              case 5:
+              case 6:
                 parsed = _context.sent;
-                _context.next = 8;
-                return localStorage.setItem('user', parsed);
-
-              case 8:
-                _context.next = 10;
-                return context.commit('setUser', response.data.user);
-
-              case 10:
+                localStorage.setItem('user', parsed);
+                context.commit('setUser', response.data.user);
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
 
-              case 11:
+              case 10:
               case "end":
                 return _context.stop();
             }

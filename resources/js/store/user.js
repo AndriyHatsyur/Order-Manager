@@ -14,11 +14,20 @@ export default {
 
         isUserLogin(state) {
 
-            if (state.user.user != null)
-                return state.user.user;
+            if (state.user != null)
+                return true
 
             return false;
+        },
+
+        userGroupName(state){
+            return state.user.group.name;
+        },
+
+        userGroupId(state){
+            return state.user.group_id;
         }
+
 
     },
 
@@ -27,12 +36,13 @@ export default {
         async loginUser (context, data){
 
            const response = await axios.post(`/app/login`, data);
+           console.log(response.data.user);
 
            const parsed = await JSON.stringify(response.data.user);
 
-           await  localStorage.setItem('user', parsed);
+           localStorage.setItem('user', parsed);
 
-           await context.commit('setUser', response.data.user);
+           context.commit('setUser', response.data.user);
 
            window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
 

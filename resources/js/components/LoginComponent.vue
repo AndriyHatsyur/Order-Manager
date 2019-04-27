@@ -32,7 +32,6 @@
 
         methods:{
             login:function(){
-
                 this.$store.dispatch('loginUser', this.post).then(()=>{
                     this.$router.push('/orders');
                 });

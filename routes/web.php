@@ -13,24 +13,18 @@
 
 
 
-
 Route::get('/',function (){
-
 
     return view('main');
 
-
 });
 
-//Route::get('/app/test', 'OrderController@cancel');
 
 Route::post('/app/login', 'Auth\LoginController@login');
 Route::get('/app/logout', 'Auth\LoginController@logout')->name('logout');
 
 
 Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
-
-
 
 	Route::get('/orders', 'OrderController@index')->name('orders');
 	Route::post('/orders', 'OrderController@create');
@@ -40,7 +34,6 @@ Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 
 	Route::get('/my-orders', 'OrderController@myOrders')->name('myOrders');
 	Route::get('/group-orders', 'OrderController@groupOrders')->name('grouOrders');
-
 
     Route::post('/term/', 'OrderController@setTerm');
 

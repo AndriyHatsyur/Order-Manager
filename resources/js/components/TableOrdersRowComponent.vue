@@ -9,7 +9,6 @@
         <td>{{order.location.name}}</td>
         <td>{{order.reason.name}}</td>
         <td>
-
             <select :disabled="order.status.code >= 300" v-model="order.term" v-if="!order.term" class="form-control" @change="setTerm">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -34,16 +33,13 @@
                     title="Add order"
                     @click="addChildren"
                     data-toggle="modal" data-target="#addOrder"
-
             >
                 playlist_add</button>
-
             <button class="material-icons green"
                title="Success"
                @click="success"
             >
                 check_circle_outline</button>
-
             <button class="material-icons child"
                title="Cancel"
                @click="cancel"
@@ -51,45 +47,30 @@
                 cancel</button>
         </td>
     </tr>
-    
 </template>
 
 <script>
     export default {
         name: "TableOrdersRowComponent",
         props:['order'],
-
         methods:{
-
             setTerm:function () {
-
-                axios.post(`/app/term`, this.order)
-                    .then(response => {
-                        this.order.term = response.data.term;
-                        this.order.status.name = response.data.status.name;
-                    })
-                    .catch(e => {})
-
+                this.$store.dispatch('setTerm', this.order).then(response =>{
+                    this.order.term = response.data.term;
+                    this.order.status.name = response.data.status.name;
+                })
             },
 
             cancel: function () {
 
-                axios.post(`/app/orders-cancel`, this.order)
-                    .then(response => {
-                        this.$store.dispatch('loadOrders');
-                    })
-                    .catch(e => {})
+                this.$store.dispatch('cancel', this.order);
             },
 
             zonder: function () {
 
-                axios.post(`/app/zonder`, this.order)
-                    .then(response => {
-
-                        order.zonder = !order.zonder;
-
-                    })
-                    .catch(e => {})
+                this.$store.dispatch('zonder', this.order).then(()=>{
+                    this.order.zonder = !this.order.zonder;
+                })
             },
 
             addChildren: function () {
@@ -98,13 +79,7 @@
 
             },
             success: function () {
-
-                axios.post(`/app/orders-success`, this.order)
-                    .then(response => {
-                        this.$store.dispatch('loadOrders');
-                        console.log(response);
-                    })
-                    .catch(e => {})
+                this.$store.dispatch('success', this.order);
             }
         }
     }

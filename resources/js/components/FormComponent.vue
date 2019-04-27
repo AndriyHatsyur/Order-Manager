@@ -10,14 +10,13 @@
           </div>
           <div class="modal-body">
           <form>
-
             <div class="form-group">
               <label>Location</label>
-              <select v-model="post.location" class="form-control" >
+              <select v-model="post.location" class="form-control">
                 <option value="F2">F2</option>
                 <option value="X1">X1</option>
-                <option value="F2">F1</option>
-                <option value="F1">F5</option>
+                <option value="F1">F1</option>
+                <option value="F5">F5</option>
                 <option value="F7">F7</option>
               </select>
             </div>
