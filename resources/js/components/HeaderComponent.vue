@@ -13,7 +13,7 @@
                                     >
                     <i class="material-icons" :title="link.title">{{link.icon}}</i>
                 </router-link>
-                <a class="nav-item nav-link" href="app/logout" title="Logout" @click="logout"><i class="material-icons">
+                <a v-if="this.$store.getters.isUserLogin" class="nav-item nav-link" href="app/logout" title="Logout" @click="logout"><i class="material-icons">
                     input
                 </i></a>
             </div>
@@ -25,14 +25,26 @@
 <script>
     export default {
         name: "HeaderComponent",
-        data () {
-            return {
-                links: [
-                    {title:'Orders list', icon:'format_list_numbered', url:'/orders'},
-                    {title:'Activities list', icon:'assignment', url:'/activities'},
-                    {title:'Settings', icon:'settings', url:'/settings'},
-                ]
-            }
+
+        computed:{
+          links:function () {
+
+              if (this.$store.getters.isUserLogin){
+                  return [
+                      {title:'Orders list', icon:'format_list_numbered', url:'/orders'},
+                      {title:'User orders', icon:'format_indent_increase', url:'/user-orders'},
+                      {title:'Activities list', icon:'assignment', url:'/activities'},
+                      {title:'Settings', icon:'settings', url:'/settings'},
+
+                  ]
+              }else{
+                  return [
+                      {title:'Login', icon:'security', url:'/login'},
+
+                  ]
+              }
+
+          }
         },
 
         methods:{

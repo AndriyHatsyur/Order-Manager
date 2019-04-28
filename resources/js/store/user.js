@@ -14,10 +14,7 @@ export default {
 
         isUserLogin(state) {
 
-            if (state.user != null)
-                return true
-
-            return false;
+            return state.user != null;
         },
 
         userGroupName(state){
@@ -36,7 +33,6 @@ export default {
         async loginUser (context, data){
 
            const response = await axios.post(`/app/login`, data);
-           console.log(response.data.user);
 
            const parsed = await JSON.stringify(response.data.user);
 
@@ -54,8 +50,7 @@ export default {
 
             localStorage.removeItem('user');
 
-        }
-
+        },
 
     }
 

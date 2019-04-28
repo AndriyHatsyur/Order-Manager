@@ -21,19 +21,18 @@ Route::get('/',function (){
 
 
 Route::post('/app/login', 'Auth\LoginController@login');
-Route::get('/app/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/app/logout', 'Auth\LoginController@logout');
 
 
 Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 
-	Route::get('/orders', 'OrderController@index')->name('orders');
+	Route::get('/orders', 'OrderController@index');
 	Route::post('/orders', 'OrderController@create');
     Route::post('/orders-cancel', 'OrderController@cancel');
     Route::post('/orders-success', 'OrderController@success');
     Route::post('/zonder/', 'OrderController@zonder');
 
-	Route::get('/my-orders', 'OrderController@myOrders')->name('myOrders');
-	Route::get('/group-orders', 'OrderController@groupOrders')->name('grouOrders');
+	Route::get('/user-orders', 'OrderController@userOrders');
 
     Route::post('/term/', 'OrderController@setTerm');
 

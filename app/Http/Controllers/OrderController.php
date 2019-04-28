@@ -164,13 +164,11 @@ class OrderController extends Controller
     /**
      * @return array
      */
-    public function myOrders()
+    public function userOrders()
     {
-        $orders = Auth::user()->orders()->where('parent_id', NULL)->get()->load('children', 'user', 'group');
+        $orders = Auth::user()->orders()->orderBy('id', 'desc')->take(100)->get()->load('children', 'user', 'group', 'status', 'location', 'reason');
 
-        $data = $this->data($orders);
-
-        return $data;
+        return $orders;
     }
 
 

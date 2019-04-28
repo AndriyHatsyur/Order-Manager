@@ -52,7 +52,9 @@
 <script>
     export default {
         name: "TableOrdersRowComponent",
+
         props:['order'],
+
         methods:{
             setTerm:function () {
                 this.$store.dispatch('setTerm', this.order).then(response =>{

@@ -2,10 +2,10 @@
     <div class="container-fluid">
       <form-component></form-component>
         <div class="row control">
-            <div class="col-sm-6">
-                <button class="material-icons btn-success" title="add new order" data-toggle="modal" data-target="#addOrder">add</button>
-                <button @click="allOrders">All</button>
-                <button @click="userGroupOrders">{{userGroupName}}</button>
+            <div class="col-sm-6 left">
+                <button class="material-icons btn-success btn-sm add" title="Add new order" data-toggle="modal" data-target="#addOrder">add</button>
+                <button :class="{'btn-success': btnAll}" @click="allOrders" class="all btn btn-secondary btn-sm">All</button>
+                <button :class="{'btn-success': btnUserGroup}" @click="userGroupOrders" class=" user-group btn btn-secondary btn-sm">{{userGroupName}}</button>
             </div>
             <div class="col-sm-6 right">
                 <input v-model="params" @keyup.enter="search" type="text" placeholder="Search">
@@ -57,7 +57,9 @@
 
         ],
 
-          params: ''
+          params: '',
+          btnAll: true,
+          btnUserGroup: false,
       }
 
     },
@@ -87,10 +89,14 @@
         },
 
           userGroupOrders: function () {
+              this.btnUserGroup = true;
+              this.btnAll = false;
               this.$store.commit('userGroupOrders', this.userGroupId);
         },
 
           allOrders:function () {
+              this.btnUserGroup = false;
+              this.btnAll = true;
               this.$store.commit('allOrders');
           }
 
@@ -102,7 +108,8 @@
 <style scoped>
  
   .control {
-    padding: 10px;
+      padding: 10px;
+      height: 50px;
   }
 
   .container-fluid {
@@ -114,13 +121,13 @@
         background: rgba(255,255,255,1);
     }
 
-  button{
+  .material-icons{
         padding: 0;
         border: 0;
-        font-size: 2em;
-    }  
+        font-size: 1.85em;
+    }
 
-    .right{
+    .right, left{
         position: relative;
     }
 
@@ -128,4 +135,32 @@
         position: absolute;
         right: 5px;
     }
+
+
+  button:focus, .btn-sm  {
+      text-decoration: none;
+      outline:none;
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+  }
+
+    .add, .all, .user-group{
+        position: absolute;
+    }
+
+    .add{
+
+        left: 5px;
+    }
+
+    .all {
+        left: 40px;
+    }
+
+  .user-group {
+      left: 80px;
+  }
+
+
 </style>

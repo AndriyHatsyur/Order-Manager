@@ -15,12 +15,13 @@
         },
 
             created()  {
+                    const user = window.JSON.parse(localStorage.getItem('user'));
 
-                    const user = JSON.parse(localStorage.getItem('user'));
-                    this.$store.state.user.user = user;
+                    this.$store.commit('setUser', user);
 
-                    if(this.$store.state.user.user == null)
+                    if(!this.$store.getters.isUserLogin)
                             this.$router.push('/login');
+
             },
 
 

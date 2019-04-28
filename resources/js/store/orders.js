@@ -80,15 +80,12 @@ export default {
           return state.order;
         },
 
-        getMyGroupOrders: state => {
-            return state.order.filter(orde => orde.id < 20);
-          }
     },
 
     actions: {
         async loadOrders(context) {
 
-            const response = await axios.get(`/app/orders`)
+            const response = await axios.get(`/app/orders`);
             context.commit('setOrders', response.data);
 
         },
