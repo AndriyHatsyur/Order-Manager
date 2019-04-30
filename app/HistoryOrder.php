@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class HistoryOrder extends Model
 {
+    protected $fillable = [
+        'order_id', 'user_id', 'status_id', 'change_name'
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

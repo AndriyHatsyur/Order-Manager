@@ -109,10 +109,18 @@
         width: 50px;
     }
 
-    button, button:active:hover:focus{
+    button{
         padding: 0;
         border: none;
         background: none;
+    }
+
+    button:focus  {
+        text-decoration: none;
+        outline:none;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
     }
 
 

@@ -7,6 +7,8 @@ import LoginComponent from './components/LoginComponent.vue'
 
 import UserOrdersComponent from './components/UserOrdersComponent.vue'
 
+import HistoryOrderComponent from './components/HistoryOrderComponent.vue'
+
 export default new VueRouter({
 
     routes: [
@@ -14,7 +16,7 @@ export default new VueRouter({
         { path: '/orders', component: TableOrdersComponent},
         { path: '/user-orders', component: UserOrdersComponent},
         { path: '/login', component: LoginComponent},
-    
+        { path: '/history-order', component: HistoryOrderComponent},
     ],
     mode: 'history'
 })

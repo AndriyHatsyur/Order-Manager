@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Class AdminUserController
+ * @package App\Http\Controllers\Admin
+ */
 class AdminUserController extends Controller
 {
     /**

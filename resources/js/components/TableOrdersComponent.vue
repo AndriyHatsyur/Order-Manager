@@ -3,12 +3,12 @@
       <form-component></form-component>
         <div class="row control">
             <div class="col-sm-6 left">
-                <button class="material-icons btn-success btn-sm add" title="Add new order" data-toggle="modal" data-target="#addOrder">add</button>
-                <button :class="{'btn-success': btnAll}" @click="allOrders" class="all btn btn-secondary btn-sm">All</button>
-                <button :class="{'btn-success': btnUserGroup}" @click="userGroupOrders" class=" user-group btn btn-secondary btn-sm">{{userGroupName}}</button>
+                <button class="material-icons btn-success  add" title="Add new order" data-toggle="modal" data-target="#addOrder">add</button>
+                <button :class="{'btn-success': btnAll}" @click="allOrders" class="all btn btn-secondary ">All</button>
+                <button :class="{'btn-success': btnUserGroup}" @click="userGroupOrders" class=" user-group btn btn-secondary">{{userGroupName}}</button>
             </div>
             <div class="col-sm-6 right">
-                <input v-model="params" @keyup.enter="search" type="text" placeholder="Search">
+                <input class="form-control" v-model="params" @keyup.enter="search" type="text" placeholder="Search">
             </div>
         </div>
         <table class="table table-bordered  table-hover ">
@@ -124,7 +124,7 @@
   .material-icons{
         padding: 0;
         border: 0;
-        font-size: 1.85em;
+        font-size: 2.45em;
     }
 
     .right, left{
@@ -132,12 +132,14 @@
     }
 
     input{
-        position: absolute;
+        position: absolute ;
+        max-width: 50%;
         right: 5px;
+        border-radius: 0;
     }
 
 
-  button:focus, .btn-sm  {
+  button:focus, .btn  {
       text-decoration: none;
       outline:none;
       border: none;
@@ -155,11 +157,11 @@
     }
 
     .all {
-        left: 40px;
+        left: 45px;
     }
 
   .user-group {
-      left: 80px;
+      left: 90px;
   }
 
 

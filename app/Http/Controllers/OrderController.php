@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderHistoryEvent;
 use App\Reason;
 use App\Role;
 use App\Status;
@@ -13,6 +14,10 @@ use App\Location;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
+/**
+ * Class OrderController
+ * @package App\Http\Controllers
+ */
 class OrderController extends Controller
 {
     /**
@@ -31,10 +36,10 @@ class OrderController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function create(Request $request)
     {
+
         if ($request->group == 'Transfer')
         {
             $statusId = Status::where('code', 300)->first()->id;
@@ -58,8 +63,14 @@ class OrderController extends Controller
 
         $this->setParentStatus($order, 275);
 
+        event(new OrderHistoryEvent(Auth::user() ,$order, 'create'));
+
    }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
    public function setTerm(Request $request)
    {
        $date = Carbon::now();
@@ -75,8 +86,11 @@ class OrderController extends Controller
                $order->status_id = Status::where('code', 200)->first()->id;
            }
 
-           $order->save();
+          $order->save();
+
+           event(new OrderHistoryEvent(Auth::user() ,$order, 'set term'));
        }
+
 
        return Order::find($request->id)->load('status');
 
@@ -102,11 +116,13 @@ class OrderController extends Controller
 
        $order->save();
 
+       event(new OrderHistoryEvent(Auth::user() ,$order, 'change status'));
+
    }
 
     /**
      * @param Request $request
-     * @return string
+     * @return mixed
      */
    public function success(Request $request)
    {
@@ -144,12 +160,13 @@ class OrderController extends Controller
            }
        }
 
+       event(new OrderHistoryEvent(Auth::user() ,$order, 'change status'));
+
    }
 
 
-    /***
+    /**
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function zonder(Request $request)
     {
@@ -159,10 +176,12 @@ class OrderController extends Controller
 
         $order->save();
 
+        event(new OrderHistoryEvent(Auth::user() ,$order, 'change zonder'));
+
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function userOrders()
     {
@@ -175,6 +194,7 @@ class OrderController extends Controller
     /**
      * @param \Illuminate\Support\Collection $orders
      * @param array $data
+     * @param int $counter
      * @return array
      */
     private function data(\Illuminate\Support\Collection $orders, &$data = [], &$counter = 1): array
@@ -225,6 +245,8 @@ class OrderController extends Controller
             $parent = $order->parent;
             $parent->status_id = Status::where('code', $statusCode)->first()->id;
             $parent->save();
+
+            event(new OrderHistoryEvent(Auth::user() ,$parent, 'change parent'));
 
             return true;
         }

@@ -26,7 +26,8 @@
                     <td>{{order.group.name}}</td>
                     <td>{{order.location.name}}</td>
                     <td>{{order.reason.name}}</td>
-                    <td>{{order.term}}</td>
+                    <td v-if="order.term !=null">{{order.term.substring(0,16)}}</td>
+                    <td v-else>{{order.term}}</td>
                 </tr>
             </template>
 
@@ -48,7 +49,6 @@
         created() {
             axios.get(`/app/user-orders`).then(response => {
                 this.userOrders = response.data;
-                console.log(this.userOrders);
             });
         }
     }

@@ -92,4 +92,16 @@
 
 <style scoped>
 
+  button, input, select, .modal-content {
+    border-radius: 0 !important;
+  }
+
+  button:focus, .btn  {
+    text-decoration: none;
+    outline:none;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
 </style>

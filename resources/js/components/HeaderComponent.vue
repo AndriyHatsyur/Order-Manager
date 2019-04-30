@@ -33,8 +33,11 @@
                   return [
                       {title:'Orders list', icon:'format_list_numbered', url:'/orders'},
                       {title:'User orders', icon:'format_indent_increase', url:'/user-orders'},
+                      {title:'History order', icon:' history', url:'/history-order'},
                       {title:'Activities list', icon:'assignment', url:'/activities'},
                       {title:'Settings', icon:'settings', url:'/settings'},
+
+
 
                   ]
               }else{

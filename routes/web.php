@@ -36,6 +36,8 @@ Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 
     Route::post('/term/', 'OrderController@setTerm');
 
+    Route::post('/history-order', 'HistoryOrderController@getHistory');
+
 	// admin routes
     Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
         Route::get('users', 'AdminUserController@index');
