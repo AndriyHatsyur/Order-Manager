@@ -65,9 +65,11 @@
         methods: {
 
             getHistory: function () {
+                this.$store.commit('setPreloader', true);
                 axios.post(`/app/history-order`, this.post).then(response => {
                     this.history = response.data;
                     this.clear();
+                    this.$store.commit('setPreloader', false);
                 });
             },
 

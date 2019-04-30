@@ -2,15 +2,24 @@
     <div class="container-fluid">
       <form-component></form-component>
         <div class="row control">
-            <div class="col-sm-6 left">
-                <button class="material-icons btn-success  add" title="Add new order" data-toggle="modal" data-target="#addOrder">add</button>
+            <div class="col-sm-3 left">
+                <button @click="this.$store.state.orderForm.post.parent = null" class="material-icons btn-success  add" title="Add new order" data-toggle="modal" data-target="#addOrder">add</button>
                 <button :class="{'btn-success': btnAll}" @click="allOrders" class="all btn btn-secondary ">All</button>
                 <button :class="{'btn-success': btnUserGroup}" @click="userGroupOrders" class=" user-group btn btn-secondary">{{userGroupName}}</button>
+
             </div>
-            <div class="col-sm-6 right">
+            <div class="col-sm-6">
+                <span> New: {{newOrders}} ;</span>
+                <span> In-Process: {{inProcessOrders}} ;</span>
+                <span> In-Transport: {{inTransportOrders}} ;</span>
+                <span> No-component: {{noComponentsOrders}} ;</span>
+                <span> Incomplete: {{incompleteOrders}} ;</span>
+            </div>
+            <div class="col-sm-3 right">
                 <input class="form-control" v-model="params" @keyup.enter="search" type="text" placeholder="Search">
             </div>
         </div>
+
         <table class="table table-bordered  table-hover ">
             <thead>
             <tr>
@@ -75,6 +84,29 @@
 
         userGroupId: function () {
             return this.$store.getters.userGroupId;
+        },
+
+        newOrders: function () {
+
+            return this.countStatusOrders(100);
+        },
+
+        inProcessOrders: function () {
+
+            return this.countStatusOrders(200);
+        },
+
+        inTransportOrders: function () {
+
+            return this.countStatusOrders(300);
+        },
+
+        noComponentsOrders: function () {
+            return this.countStatusOrders(275);
+        },
+
+        incompleteOrders: function () {
+            return this.countStatusOrders(250);
         }
     },
 
@@ -98,6 +130,15 @@
               this.btnUserGroup = false;
               this.btnAll = true;
               this.$store.commit('allOrders');
+          },
+
+          countStatusOrders: function (statusCode) {
+
+              const arr = this.orders.filter(order => {
+                  return order.status.code == statusCode;
+              });
+
+              return arr.length;
           }
 
       }
@@ -133,7 +174,7 @@
 
     input{
         position: absolute ;
-        max-width: 50%;
+        max-width: 80%;
         right: 5px;
         border-radius: 0;
     }

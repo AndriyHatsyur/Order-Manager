@@ -12,11 +12,14 @@
 */
 
 
+use App\Group;
+use App\Location;
+use App\Reason;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/',function (){
 
     return view('main');
-
 });
 
 

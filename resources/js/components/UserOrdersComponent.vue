@@ -47,9 +47,12 @@
         },
 
         created() {
+            this.$store.commit('setPreloader', true);
             axios.get(`/app/user-orders`).then(response => {
                 this.userOrders = response.data;
+                this.$store.commit('setPreloader', false);
             });
+
         }
     }
 </script>

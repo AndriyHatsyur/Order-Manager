@@ -85,6 +85,7 @@
               this.post.zonder   = false;
               this.post.parent   = null;
               this.post.transport = false;
+              this.$store.state.orderForm.post.parent = null;
             }
         }
     }

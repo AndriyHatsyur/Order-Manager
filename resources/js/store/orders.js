@@ -85,8 +85,10 @@ export default {
     actions: {
         async loadOrders(context) {
 
+            context.commit('setPreloader', true);
             const response = await axios.get(`/app/orders`);
             context.commit('setOrders', response.data);
+            context.commit('setPreloader', false);
 
         },
 

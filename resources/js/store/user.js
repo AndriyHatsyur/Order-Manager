@@ -17,6 +17,18 @@ export default {
             return state.user != null;
         },
 
+        isUserAdmin(state){
+            if(state.user != null)
+                return state.user.roles.is_admin;
+            return false
+        },
+
+        isUserSuperAdmin(state){
+            if(state.user!= null)
+                return state.user.roles.is_super_admin;
+            return false
+        },
+
         userGroupName(state){
             return state.user.group.name;
         },

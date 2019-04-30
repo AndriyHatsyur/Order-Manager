@@ -13,6 +13,17 @@
                                     >
                     <i class="material-icons" :title="link.title">{{link.icon}}</i>
                 </router-link>
+
+                <router-link
+                        v-for="link in adminLinks"
+                        class="nav-item nav-link"
+                        active-class="active"
+                        :to="link.url"
+                        :key="link.title"
+                >
+                    <i class="material-icons" :title="link.title">{{link.icon}}</i>
+                </router-link>
+
                 <a v-if="this.$store.getters.isUserLogin" class="nav-item nav-link" href="app/logout" title="Logout" @click="logout"><i class="material-icons">
                     input
                 </i></a>
@@ -36,9 +47,6 @@
                       {title:'History order', icon:' history', url:'/history-order'},
                       {title:'Activities list', icon:'assignment', url:'/activities'},
                       {title:'Settings', icon:'settings', url:'/settings'},
-
-
-
                   ]
               }else{
                   return [
@@ -46,8 +54,15 @@
 
                   ]
               }
+          },
 
-          }
+            adminLinks: function () {
+                if (this.$store.getters.isUserAdmin || this.$store.getters.isUserSuperAdmin){
+                    return [
+                        {title:'Users', icon:'supervised_user_circle', url:'/users'},
+                    ]
+                }
+            }
         },
 
         methods:{
