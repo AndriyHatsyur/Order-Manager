@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Group;
+use App\Location;
 use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,7 +21,7 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::all()->load('group', 'location', 'roles');
 
         return $users;
     }
@@ -36,7 +38,10 @@ class AdminUserController extends Controller
 
         $user = User::create([
             't_number' => $request->t_number,
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
+            'group_id' => Group::where('name', $request->group)->first()->id,
+            'location_id' => Location::where('name', $request->location)->first()->id
+
         ]);
 
         Role::create(['user_id' => $user->id]);
@@ -63,6 +68,13 @@ class AdminUserController extends Controller
         if ($request->user()->cannot('update', new User())) {
             abort(403);
         }
+
+        $user = User::find($request->id);
+        $user->group_id = Group::where('name', $request->group)->first()->id;
+        $user->location_id = Location::where('name', $request->location)->first()->id;
+        $user->roles->is_admin =  (int)$request->is_admin;
+        $user->roles->save();
+        $user->save();
 
     }
 }

@@ -33,7 +33,8 @@ Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 	// admin routes
     Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
         Route::get('users', 'AdminUserController@index');
-        Route::post('users', 'AdminUserController@create');
+        Route::post('user', 'AdminUserController@create');
+        Route::post('user-update', 'AdminUserController@update');
         Route::delete('users', 'AdminUserController@destroy');
     });
 
