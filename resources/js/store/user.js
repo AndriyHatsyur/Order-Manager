@@ -1,3 +1,4 @@
+import router from './../routes'
 export default {
     state: {
         user: null,
@@ -44,15 +45,24 @@ export default {
 
         async loginUser (context, data){
 
-           const response = await axios.post(`/app/login`, data);
+            try {
+                const response = await axios.post(`/app/login`, data);
 
-           const parsed = await JSON.stringify(response.data.user);
+                const parsed = await JSON.stringify(response.data.user);
 
-           localStorage.setItem('user', parsed);
+                localStorage.setItem('user', parsed);
 
-           context.commit('setUser', response.data.user);
+                context.commit('setUser', response.data.user);
 
-           window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+                window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+
+                if (response.status == 200)
+                    router.push('/orders');
+
+            }catch (e) {
+
+                alert('Wrong login or password ' + e.message);
+            }
 
         },
 

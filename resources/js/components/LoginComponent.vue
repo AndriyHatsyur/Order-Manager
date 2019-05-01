@@ -11,7 +11,7 @@
                 <input v-model="post.password" type="password" class="form-control"  placeholder="Password">
             </div>
 
-            <button type="submit" class="btn btn-primary" >Submit</button>
+            <button @keyup.enter="login" type="submit" class="btn btn-primary" >Submit</button>
         </form>
     </div>
 </template>
@@ -32,9 +32,7 @@
 
         methods:{
             login:function(){
-                this.$store.dispatch('loginUser', this.post).then(()=>{
-                    this.$router.push('/orders');
-                });
+                this.$store.dispatch('loginUser', this.post);
             },
         }
     }

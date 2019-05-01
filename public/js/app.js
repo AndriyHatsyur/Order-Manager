@@ -2134,11 +2134,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     login: function login() {
-      var _this = this;
-
-      this.$store.dispatch('loginUser', this.post).then(function () {
-        _this.$router.push('/orders');
-      });
+      this.$store.dispatch('loginUser', this.post);
     }
   }
 });
@@ -2383,10 +2379,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.commit('allOrders');
     },
     countStatusOrders: function countStatusOrders(statusCode) {
-      var arr = this.orders.filter(function (order) {
+      var arr = this.$store.state.orders.data.filter(function (order) {
         return order.status.code == statusCode;
       });
       return arr.length;
+    },
+    clear: function clear() {
+      this.$store.state.orderForm.post.parent = null;
     }
   }
 });
@@ -2402,6 +2401,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -7127,7 +7133,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.preloader[data-v-0526e99c] {\n    position: absolute;\n    z-index: 1000;\n    background-color: ghostwhite;\n    height: 100%;\n    width: 100%;\n    text-align: center;\n    padding: 25%;\n    opacity: 0.5;\n}\n\n", ""]);
+exports.push([module.i, "\n.preloader[data-v-0526e99c] {\n    position: absolute;\n    z-index: 1000;\n    background-color: ghostwhite;\n    height: 100%;\n    width: 100%;\n    text-align: center;\n    padding: 25%;\n    opacity: 0.6;\n    position: fixed;\n}\n\n", ""]);
 
 // exports
 
@@ -40218,7 +40224,21 @@ var render = function() {
         _vm._v(" "),
         _c(
           "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "submit" },
+            on: {
+              keyup: function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.login($event)
+              }
+            }
+          },
           [_vm._v("Submit")]
         )
       ]
@@ -40361,11 +40381,7 @@ var render = function() {
                 "data-toggle": "modal",
                 "data-target": "#addOrder"
               },
-              on: {
-                click: function($event) {
-                  this.$store.state.orderForm.post.parent = null
-                }
-              }
+              on: { click: _vm.clear }
             },
             [_vm._v("add")]
           ),
@@ -40607,8 +40623,15 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "material-icons green",
-          attrs: { title: "Success" },
+          staticClass: "material-icons",
+          class: {
+            green: _vm.order.status.code <= 200 || _vm.order.status.code >= 300
+          },
+          attrs: {
+            disabled:
+              _vm.order.status.code > 200 && _vm.order.status.code < 300,
+            title: "Success"
+          },
           on: { click: _vm.success }
         },
         [_vm._v("\n            check_circle_outline")]
@@ -40617,8 +40640,15 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "material-icons child",
-          attrs: { title: "Cancel" },
+          staticClass: "material-icons ",
+          class: {
+            child: _vm.order.status.code <= 200 || _vm.order.status.code >= 300
+          },
+          attrs: {
+            disabled:
+              _vm.order.status.code > 200 && _vm.order.status.code < 300,
+            title: "Cancel"
+          },
           on: { click: _vm.cancel }
         },
         [_vm._v("\n            cancel")]
@@ -58027,11 +58057,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../routes */ "./resources/js/routes.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
@@ -58071,26 +58103,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                _context.prev = 0;
+                _context.next = 3;
                 return axios.post("/app/login", data);
 
-              case 2:
+              case 3:
                 response = _context.sent;
-                _context.next = 5;
+                _context.next = 6;
                 return JSON.stringify(response.data.user);
 
-              case 5:
+              case 6:
                 parsed = _context.sent;
                 localStorage.setItem('user', parsed);
                 context.commit('setUser', response.data.user);
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+                if (response.status == 200) _routes__WEBPACK_IMPORTED_MODULE_1__["default"].push('/orders');
+                _context.next = 16;
+                break;
 
-              case 9:
+              case 13:
+                _context.prev = 13;
+                _context.t0 = _context["catch"](0);
+                alert('Wrong login or password ' + _context.t0.message);
+
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, null, [[0, 13]]);
       }));
 
       function loginUser(_x, _x2) {

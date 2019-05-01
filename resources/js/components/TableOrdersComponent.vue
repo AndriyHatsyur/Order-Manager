@@ -3,7 +3,7 @@
       <form-component></form-component>
         <div class="row control">
             <div class="col-sm-3 left">
-                <button @click="this.$store.state.orderForm.post.parent = null" class="material-icons btn-success  add" title="Add new order" data-toggle="modal" data-target="#addOrder">add</button>
+                <button @click="clear" class="material-icons btn-success  add" title="Add new order" data-toggle="modal" data-target="#addOrder">add</button>
                 <button :class="{'btn-success': btnAll}" @click="allOrders" class="all btn btn-secondary ">All</button>
                 <button :class="{'btn-success': btnUserGroup}" @click="userGroupOrders" class=" user-group btn btn-secondary">{{userGroupName}}</button>
 
@@ -134,11 +134,15 @@
 
           countStatusOrders: function (statusCode) {
 
-              const arr = this.orders.filter(order => {
+              const arr = this.$store.state.orders.data.filter(order => {
                   return order.status.code == statusCode;
               });
 
               return arr.length;
+          },
+
+          clear: function(){
+              this.$store.state.orderForm.post.parent = null;
           }
 
       }

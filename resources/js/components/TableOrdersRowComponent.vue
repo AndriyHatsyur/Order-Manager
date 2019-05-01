@@ -35,14 +35,21 @@
                     data-toggle="modal" data-target="#addOrder"
             >
                 playlist_add</button>
-            <button class="material-icons green"
-               title="Success"
-               @click="success"
+            <button
+                    :disabled="order.status.code > 200 && order.status.code < 300"
+                    :class="{ 'green': order.status.code <= 200 || order.status.code >= 300 }"
+                    class="material-icons"
+
+                    title="Success"
+                    @click="success"
             >
                 check_circle_outline</button>
-            <button class="material-icons child"
-               title="Cancel"
-               @click="cancel"
+            <button
+                    class="material-icons "
+                    :disabled="order.status.code > 200 && order.status.code < 300"
+                    :class="{ 'child': order.status.code <= 200 || order.status.code >= 300 }"
+                    title="Cancel"
+                    @click="cancel"
             >
                 cancel</button>
         </td>

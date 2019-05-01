@@ -32,7 +32,8 @@
         width: 100%;
         text-align: center;
         padding: 25%;
-        opacity: 0.5;
+        opacity: 0.6;
+        position: fixed;
     }
 
 </style>

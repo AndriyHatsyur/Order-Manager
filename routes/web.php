@@ -12,17 +12,6 @@
 */
 
 
-use App\Group;
-use App\Location;
-use App\Reason;
-use Illuminate\Support\Facades\Auth;
-
-Route::get('/',function (){
-
-    return view('main');
-});
-
-
 Route::post('/app/login', 'Auth\LoginController@login');
 Route::get('/app/logout', 'Auth\LoginController@logout');
 
@@ -50,4 +39,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
 
 });
 
+Route::any('{all}', function (){
+    return view('main');
+})->where('all', '.*');
 
