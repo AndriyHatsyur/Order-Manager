@@ -26,8 +26,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <template v-for="item in history">
-                    <tr>
+                <template v-for="item in history" >
+                    <tr :key="item.id">
                         <td>{{String('00000' + item.order.id).slice(-7)}}</td>
                         <td>{{item.order.teil}}</td>
                         <td>{{item.status.name}}</td>

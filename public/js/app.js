@@ -2570,6 +2570,18 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
 //
 //
 //
@@ -2647,19 +2659,16 @@ __webpack_require__.r(__webpack_exports__);
         t_number: '',
         group: '',
         location: ''
-      },
-      users: []
+      }
     };
   },
+  computed: {
+    users: function users() {
+      return this.$store.getters.getAllUsers;
+    }
+  },
   created: function created() {
-    var _this = this;
-
-    this.$store.commit('setPreloader', true);
-    axios.get("/app/admin/users").then(function (response) {
-      _this.users = response.data;
-
-      _this.$store.commit('setPreloader', false);
-    });
+    this.$store.dispatch('loadUsers');
   },
   methods: {
     save: function save(user) {
@@ -2669,15 +2678,47 @@ __webpack_require__.r(__webpack_exports__);
         location: user.location.name,
         is_admin: user.roles.is_admin
       };
-      axios.post('/app/admin/user-update', data);
+      this.$store.dispatch('updateUser', data);
     },
-    create: function create() {
-      var _this2 = this;
+    create: function () {
+      var _create = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.$store.dispatch('createUser', this.data);
 
-      console.log(this.data);
-      axios.post('/app/admin/user', this.data).then(function () {
-        _this2.data.t_number = '';
-      });
+              case 2:
+                this.clear();
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function create() {
+        return _create.apply(this, arguments);
+      }
+
+      return create;
+    }(),
+    deleteUser: function deleteUser(user) {
+      var data = {
+        id: user.id,
+        _method: 'DELETE'
+      };
+      this.$store.dispatch('deleteUser', data);
+    },
+    clear: function clear() {
+      this.data.t_number = '';
+      this.data.group = '';
+      this.data.location = '';
     }
   }
 });
@@ -7332,7 +7373,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.container-fluid[data-v-47d47080] {\n    background-color: #cccccc;\n    min-height: 90vh;\n    padding-top:20px;\n}\n.table[data-v-47d47080] {\n    background: rgba(255,255,255,1);\n}\n.input-field[data-v-47d47080] {\n    text-align: center;\n}\n\n\n", ""]);
+exports.push([module.i, "\n.container-fluid[data-v-47d47080] {\n      background-color: #cccccc;\n      min-height: 90vh;\n      padding-top:20px;\n}\n.table[data-v-47d47080] {\n      background: rgba(255,255,255,1);\n}\n.input-field[data-v-47d47080] {\n      text-align: center;\n}\nbutton[data-v-47d47080], input[data-v-47d47080], select[data-v-47d47080], .modal-content[data-v-47d47080] {\n  border-radius: 0 !important;\n}\nbutton[data-v-47d47080]:focus, .btn[data-v-47d47080], .btn-sm[data-v-47d47080]  {\n      text-decoration: none;\n      outline:none;\n      border: none;\n      box-shadow: none;\n      border-radius: 0;\n}\n\n\n\n", ""]);
 
 // exports
 
@@ -40227,7 +40268,7 @@ var render = function() {
         [
           _vm._l(_vm.history, function(item) {
             return [
-              _c("tr", [
+              _c("tr", { key: item.id }, [
                 _c("td", [
                   _vm._v(_vm._s(String("00000" + item.order.id).slice(-7)))
                 ]),
@@ -41030,7 +41071,11 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-sm-1" }, [
-        _c("button", { on: { click: _vm.create } }, [_vm._v(" Create")])
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", on: { click: _vm.create } },
+          [_vm._v(" Create")]
+        )
       ])
     ]),
     _vm._v(" "),
@@ -41044,7 +41089,7 @@ var render = function() {
         [
           _vm._l(_vm.users, function(user) {
             return [
-              _c("tr", [
+              _c("tr", { key: user.id }, [
                 _c("td", [_vm._v(_vm._s(user.t_number))]),
                 _vm._v(" "),
                 _c("td", [
@@ -41191,6 +41236,7 @@ var render = function() {
                   _c(
                     "button",
                     {
+                      staticClass: "btn-sm btn-success",
                       on: {
                         click: function($event) {
                           return _vm.save(user)
@@ -41198,6 +41244,19 @@ var render = function() {
                       }
                     },
                     [_vm._v("Save")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn-sm btn-danger",
+                      on: {
+                        click: function($event) {
+                          return _vm.deleteUser(user)
+                        }
+                      }
+                    },
+                    [_vm._v("Delete")]
                   )
                 ])
               ])
@@ -58219,10 +58278,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user */ "./resources/js/store/user.js");
+/* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./login */ "./resources/js/store/login.js");
 /* harmony import */ var _orderForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./orderForm */ "./resources/js/store/orderForm.js");
 /* harmony import */ var _orders__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./orders */ "./resources/js/store/orders.js");
 /* harmony import */ var _ads__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ads */ "./resources/js/store/ads.js");
+/* harmony import */ var _users__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./users */ "./resources/js/store/users.js");
+
 
 
 
@@ -58232,12 +58293,116 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
-    user: _user__WEBPACK_IMPORTED_MODULE_2__["default"],
+    login: _login__WEBPACK_IMPORTED_MODULE_2__["default"],
     orderForm: _orderForm__WEBPACK_IMPORTED_MODULE_3__["default"],
     orders: _orders__WEBPACK_IMPORTED_MODULE_4__["default"],
-    ads: _ads__WEBPACK_IMPORTED_MODULE_5__["default"]
+    ads: _ads__WEBPACK_IMPORTED_MODULE_5__["default"],
+    users: _users__WEBPACK_IMPORTED_MODULE_6__["default"]
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/login.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/login.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../routes */ "./resources/js/routes.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: {
+    user: null
+  },
+  mutations: {
+    setUser: function setUser(state, user) {
+      state.user = user;
+    }
+  },
+  getters: {
+    isUserLogin: function isUserLogin(state) {
+      return state.user != null;
+    },
+    isUserAdmin: function isUserAdmin(state) {
+      if (state.user != null) return state.user.roles.is_admin;
+      return false;
+    },
+    isUserSuperAdmin: function isUserSuperAdmin(state) {
+      if (state.user != null) return state.user.roles.is_super_admin;
+      return false;
+    },
+    userGroupName: function userGroupName(state) {
+      return state.user.group.name;
+    },
+    userGroupId: function userGroupId(state) {
+      return state.user.group_id;
+    }
+  },
+  actions: {
+    loginUser: function () {
+      var _loginUser = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(context, data) {
+        var response, parsed;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return axios.post("/app/login", data);
+
+              case 3:
+                response = _context.sent;
+                _context.next = 6;
+                return JSON.stringify(response.data.user);
+
+              case 6:
+                parsed = _context.sent;
+                localStorage.setItem('user', parsed);
+                context.commit('setUser', response.data.user);
+                window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+                if (response.status == 200) _routes__WEBPACK_IMPORTED_MODULE_1__["default"].push('/orders');
+                _context.next = 16;
+                break;
+
+              case 13:
+                _context.prev = 13;
+                _context.t0 = _context["catch"](0);
+                alert('Wrong login or password ' + _context.t0.message);
+
+              case 16:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 13]]);
+      }));
+
+      function loginUser(_x, _x2) {
+        return _loginUser.apply(this, arguments);
+      }
+
+      return loginUser;
+    }(),
+    logout: function logout(context) {
+      context.commit('setUser', null);
+      localStorage.removeItem('user');
+    }
+  }
+});
 
 /***/ }),
 
@@ -58526,10 +58691,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./resources/js/store/user.js":
-/*!************************************!*\
-  !*** ./resources/js/store/user.js ***!
-  \************************************/
+/***/ "./resources/js/store/users.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/users.js ***!
+  \*************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -58537,93 +58702,146 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../routes */ "./resources/js/routes.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
-    user: null
+    users: []
   },
   mutations: {
-    setUser: function setUser(state, user) {
-      state.user = user;
+    setUsers: function setUsers(state, data) {
+      state.users = data;
     }
   },
   getters: {
-    isUserLogin: function isUserLogin(state) {
-      return state.user != null;
-    },
-    isUserAdmin: function isUserAdmin(state) {
-      if (state.user != null) return state.user.roles.is_admin;
-      return false;
-    },
-    isUserSuperAdmin: function isUserSuperAdmin(state) {
-      if (state.user != null) return state.user.roles.is_super_admin;
-      return false;
-    },
-    userGroupName: function userGroupName(state) {
-      return state.user.group.name;
-    },
-    userGroupId: function userGroupId(state) {
-      return state.user.group_id;
+    getAllUsers: function getAllUsers(state) {
+      return state.users;
     }
   },
   actions: {
-    loginUser: function () {
-      var _loginUser = _asyncToGenerator(
+    loadUsers: function () {
+      var _loadUsers = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(context, data) {
-        var response, parsed;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(context) {
+        var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
+                context.commit('setPreloader', true);
                 _context.next = 3;
-                return axios.post("/app/login", data);
+                return axios.get("/app/admin/users");
 
               case 3:
                 response = _context.sent;
-                _context.next = 6;
-                return JSON.stringify(response.data.user);
+                context.commit('setUsers', response.data);
+                context.commit('setPreloader', false);
 
               case 6:
-                parsed = _context.sent;
-                localStorage.setItem('user', parsed);
-                context.commit('setUser', response.data.user);
-                window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
-                if (response.status == 200) _routes__WEBPACK_IMPORTED_MODULE_1__["default"].push('/orders');
-                _context.next = 16;
-                break;
-
-              case 13:
-                _context.prev = 13;
-                _context.t0 = _context["catch"](0);
-                alert('Wrong login or password ' + _context.t0.message);
-
-              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 13]]);
+        }, _callee);
       }));
 
-      function loginUser(_x, _x2) {
-        return _loginUser.apply(this, arguments);
+      function loadUsers(_x) {
+        return _loadUsers.apply(this, arguments);
       }
 
-      return loginUser;
+      return loadUsers;
     }(),
-    logout: function logout(context) {
-      context.commit('setUser', null);
-      localStorage.removeItem('user');
-    }
+    createUser: function () {
+      var _createUser = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(context, user) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post('/app/admin/user', user);
+
+              case 2:
+                context.dispatch('loadUsers');
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function createUser(_x2, _x3) {
+        return _createUser.apply(this, arguments);
+      }
+
+      return createUser;
+    }(),
+    updateUser: function () {
+      var _updateUser = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(context, user) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.post('/app/admin/user-update', user);
+
+              case 2:
+                context.dispatch('loadUsers');
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }));
+
+      function updateUser(_x4, _x5) {
+        return _updateUser.apply(this, arguments);
+      }
+
+      return updateUser;
+    }(),
+    deleteUser: function () {
+      var _deleteUser = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(context, user) {
+        var r;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios.post('/app/admin/user', user);
+
+              case 2:
+                r = _context4.sent;
+                console.log(r.data);
+                context.dispatch('loadUsers');
+
+              case 5:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      function deleteUser(_x6, _x7) {
+        return _deleteUser.apply(this, arguments);
+      }
+
+      return deleteUser;
+    }()
   }
 });
 

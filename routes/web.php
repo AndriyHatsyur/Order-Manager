@@ -35,12 +35,13 @@ Route::group(['middleware' => 'auth', 'prefix' => '/app'], function () {
         Route::get('users', 'AdminUserController@index');
         Route::post('user', 'AdminUserController@create');
         Route::post('user-update', 'AdminUserController@update');
-        Route::delete('users', 'AdminUserController@destroy');
+        Route::delete('user', 'AdminUserController@destroy');
     });
 
 });
 
 Route::any('{all}', function (){
     return view('main');
+
 })->where('all', '.*');
 

@@ -20,7 +20,7 @@
                 </select>
             </div>
             <div class="col-sm-1">
-                <button @click="create"> Create</button>
+                <button class="btn btn-primary" @click="create"> Create</button>
             </div>
         </div>
         <br>
@@ -36,7 +36,7 @@
             </thead>
             <tbody>
             <template v-for="user in users">
-                <tr>
+                <tr :key="user.id">
                     <td>{{user.t_number}}</td>
                     <td>
                         <select v-model="user.group.name" class="form-control" >
@@ -56,7 +56,11 @@
                     <td class="input-field">
                         <input v-model="user.roles.is_admin" type="checkbox" class="form-check-input">
                     </td>
-                    <td><button @click="save(user)">Save</button></td>
+                    <td>
+                        <button class="btn-sm btn-success" @click="save(user)">Save</button>
+                        <button class="btn-sm btn-danger" @click="deleteUser(user)">Delete</button>
+
+                    </td>
 
                 </tr>
             </template>
@@ -77,18 +81,18 @@
                     group: '',
                     location: ''
                 },
-
-                users:[]
             }
         },
 
-        created() {
-            this.$store.commit('setPreloader', true);
-            axios.get(`/app/admin/users`).then(response => {
-                this.users = response.data;
-                this.$store.commit('setPreloader', false);
-            });
+        computed: {
+          users: function () {
+              return this.$store.getters.getAllUsers;
+          }
+        },
 
+        created() {
+
+            this.$store.dispatch('loadUsers');
         },
 
         methods: {
@@ -100,16 +104,29 @@
                     is_admin: user.roles.is_admin
                 }
 
-                axios.post('/app/admin/user-update', data);
+                this.$store.dispatch('updateUser', data);
             },
 
-            create: function () {
+            create: async function () {
 
-                console.log(this.data)
-                axios.post('/app/admin/user', this.data).then(()=>{
-                    this.data.t_number = '';
-                });
+                await this.$store.dispatch('createUser', this.data);
+                this.clear();
 
+            },
+
+           deleteUser: function(user) {
+               const data = {
+                   id: user.id,
+                   _method: 'DELETE'
+               }
+
+               this.$store.dispatch('deleteUser', data);
+           },
+
+            clear: function () {
+                this.data.t_number = '';
+                this.data.group = '';
+                this.data.location = '';
             }
         }
     }
@@ -131,6 +148,19 @@
     .input-field {
         text-align: center;
     }
+
+    button, input, select, .modal-content {
+    border-radius: 0 !important;
+  }
+
+    button:focus, .btn, .btn-sm  {
+        text-decoration: none;
+        outline:none;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
 
 
 </style>
