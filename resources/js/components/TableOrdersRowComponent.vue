@@ -52,6 +52,16 @@
                     @click="cancel"
             >
                 cancel</button>
+
+            <button
+                    class="material-icons "
+                    :disabled="order.status.code > 299"
+                    :class="{ 'btn-activity': order.status.code < 300 }"
+                    title="Add activity"
+                    @click=""
+                    data-toggle="modal" data-target="#addActivity"
+            >
+                add_box</button>
         </td>
     </tr>
 </template>
@@ -112,6 +122,10 @@
         color: #000;
     }
 
+    .btn-activity {
+        color: yellowgreen !important;
+    }
+
     select {
         width: 50px;
     }
@@ -129,6 +143,8 @@
         box-shadow: none;
         border-radius: 0;
     }
+
+
 
 
 

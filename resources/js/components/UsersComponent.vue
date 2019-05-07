@@ -2,12 +2,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3">
-                <input v-model="data.t_number" type="text" class="form-control" >
+                <input v-model="data.t_number" type="text" class="form-control" placeholder="Enter Teil number" >
             </div>
             <div class="col-sm-3">
-                <select v-model="data.group" class="form-control" >
+                <select v-model="data.group" class="form-control">
                     <option value="Dispatcher">Dispatcher</option>
                     <option value="Transfer">Transfer</option>
+                    <option value="" disabled selected hidden>Change group</option>
                 </select>
             </div>
             <div class="col-sm-3">
@@ -17,10 +18,11 @@
                     <option value="F1">F1</option>
                     <option value="F5">F5</option>
                     <option value="F7">F7</option>
+                    <option value="" disabled selected hidden>Change location</option>
                 </select>
             </div>
             <div class="col-sm-1">
-                <button class="btn btn-primary" @click="create"> Create</button>
+                <button class="material-icons green fs" @click="create"> save</button>
             </div>
         </div>
         <br>
@@ -57,8 +59,8 @@
                         <input v-model="user.roles.is_admin" type="checkbox" class="form-check-input">
                     </td>
                     <td>
-                        <button class="btn-sm btn-success" @click="save(user)">Save</button>
-                        <button class="btn-sm btn-danger" @click="deleteUser(user)">Delete</button>
+                        <button class="material-icons green" @click="save(user)">save</button>
+                        <button class="material-icons red" @click="deleteUser(user)">delete</button>
 
                     </td>
 
@@ -149,16 +151,34 @@
         text-align: center;
     }
 
-    button, input, select, .modal-content {
+     input, select {
     border-radius: 0 !important;
   }
 
-    button:focus, .btn, .btn-sm  {
+    button{
+        padding: 0;
+        border: none;
+        background: none;
+    }
+
+    button:focus  {
         text-decoration: none;
         outline:none;
         border: none;
         box-shadow: none;
         border-radius: 0;
+    }
+
+    .green {
+        color: green;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .fs {
+        font-size: 2.8em;
     }
 
 

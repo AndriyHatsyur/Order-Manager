@@ -1,6 +1,7 @@
 <template>
     <div class="container-fluid">
-      <form-component></form-component>
+      <form-order-component></form-order-component>
+        <form-activity-component></form-activity-component>
         <div class="row control">
             <div class="col-sm-3 left">
                 <button @click="clear" class="material-icons btn-success  add" title="Add new order" data-toggle="modal" data-target="#addOrder">add</button>
@@ -37,14 +38,16 @@
 
 <script>
 
-  import Form from './FormComponent.vue'
+  import FormOrder from './FormOrderComponent.vue'
+  import FormActivity from './FormActivityComponent.vue'
   import Row from './TableOrdersRowComponent.vue'
   import Header from './TableHeaderComponent.vue'
 
   export default {
 
     components: {
-        'form-component': Form,
+        'form-order-component': FormOrder,
+        'form-activity-component': FormActivity,
         'row-component': Row,
         'header-component': Header,
 
